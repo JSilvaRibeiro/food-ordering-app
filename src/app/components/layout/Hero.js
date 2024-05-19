@@ -6,8 +6,12 @@ export default function Hero() {
   return (
     <section className="hero">
       <div className="py-12">
-        <h1 className="text-4xl font-bold">Everything is better with Pizza</h1>
-        <p className="my-4 text-gray-500">
+        <h1 className="text-4xl font-bold">
+          Everything
+          <br /> is better
+          <br /> with a&nbsp;<span className="text-primary">Pizza</span>
+        </h1>
+        <p className="my-6 text-gray-500">
           Pizza so good, pizza so yummy. Pizza feel amazing in my tummy!
         </p>
         <div className="flex gap-6 items-center text-base">
@@ -21,12 +25,18 @@ export default function Hero() {
           </button>
         </div>
       </div>
-      <div className="relative w-full h-[500px]">
+      <div className="relative">
         <Image
-          src={"/pizza.png"}
-          layout={"fill"}
-          objectFit={"contain"}
+          src="/pizza.png"
+          fill
+          style={{
+            objectFit: "contain",
+            minWidth: "300px",
+            minHeight: "200px",
+          }}
           alt="pizza"
+          priority // Use this if the image is above the fold
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Example sizes, adjust based on actual usage
         />
       </div>
     </section>
