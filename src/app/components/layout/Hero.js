@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import RightArrow from "../icons/RightArrow";
 import InformationIcon from "../icons/InformationIcon";
 
@@ -16,11 +16,11 @@ export default function Hero() {
         </p>
         <div className="flex gap-6 items-center text-base">
           <button className="bg-primary flex gap-2 text-white py-2 px-6 items-center rounded-full">
-            Order now
+            Order&nbsp;now
             <RightArrow />
           </button>
           <button className="flex gap-2 text-gray-700 font-semibold items-center">
-            Learn more
+            Learn&nbsp;more
             <InformationIcon />
           </button>
         </div>
@@ -28,15 +28,10 @@ export default function Hero() {
       <div className="relative">
         <Image
           src="/pizza.png"
-          fill
-          style={{
-            objectFit: "contain",
-            minWidth: "300px",
-            minHeight: "200px",
-          }}
+          objectFit="contain"
+          layout="fill"
           alt="pizza"
-          priority // Use this if the image is above the fold
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Example sizes, adjust based on actual usage
+          priority
         />
       </div>
     </section>
