@@ -16,10 +16,9 @@ export default function MenuItem() {
 
       <h4 className="font-semibold text-xl mb-2">Pepperoni Pizza</h4>
       <p className="text-gray-500 text-sm">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis rerum
-        dolorem optio sunt debitis,
+        Lorem ipsum dolor sit amet consectetur adipisicing elit
       </p>
-      <button className="bg-primary text-white rounded-full mt-2 px-6 py-2">
+      <button className="bg-primary text-white rounded-full my-2 px-6 py-2">
         Add to cart $12
       </button>
     </div>

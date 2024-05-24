@@ -4,7 +4,7 @@ import InformationIcon from "../icons/InformationIcon";
 
 export default function Hero() {
   return (
-    <section className="hero">
+    <section className="hero mt-4">
       <div className="py-12">
         <h1 className="text-4xl font-bold">
           Everything

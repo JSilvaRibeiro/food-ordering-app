@@ -1,6 +1,7 @@
 import Image from "next/legacy/image";
 import React from "react";
 import MenuItem from "../menu/MenuItem";
+import SectionHeaders from "./SectionHeaders";
 
 export default function HomeMenu() {
   return (
@@ -23,11 +24,10 @@ export default function HomeMenu() {
           />
         </div>
       </div>
-      <div className="text-center space-y-2">
-        <h3 className="uppercase text-gray-500 font-semibold">Check out</h3>
-        <h2 className="text-primary font-bold text-4xl italic">Menu</h2>
+      <div className="text-center">
+        <SectionHeaders subHeader={"check out"} mainHeader={"Menu"} />
       </div>
-      <div className="grid grid-cols-3 gap-4 my-4">
+      <div className="grid grid-cols-3 gap-4 my-4  mx-auto">
         <MenuItem />
         <MenuItem />
         <MenuItem />
