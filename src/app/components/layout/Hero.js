@@ -1,6 +1,7 @@
 import Image from "next/legacy/image";
 import RightArrow from "../icons/RightArrow";
 import InformationIcon from "../icons/InformationIcon";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -15,14 +16,19 @@ export default function Hero() {
           Pizza so good, pizza so yummy. Pizza feel amazing in my tummy!
         </p>
         <div className="flex gap-6 items-center text-base">
-          <button className="bg-primary flex gap-2 text-white py-2 px-6 items-center rounded-full">
-            Order&nbsp;now
-            <RightArrow />
-          </button>
-          <button className="flex gap-2 text-gray-700 font-semibold items-center">
+          <div className="w-72">
+            <button className="bg-primary flex gap-2 text-white py-2 px-6 items-center justify-center rounded-full">
+              Order&nbsp;now
+              <RightArrow />
+            </button>
+          </div>
+          <Link
+            href={"/"}
+            className="flex gap-2 text-gray-700 font-semibold items-center"
+          >
             Learn&nbsp;more
             <InformationIcon />
-          </button>
+          </Link>
         </div>
       </div>
       <div className="relative">

@@ -1,16 +1,32 @@
 import { User } from "@/app/models/User";
 import mongoose from "mongoose";
+import { NextResponse } from "next/server";
+
+// Function to handle database connection
+const connectDB = async () => {
+  if (mongoose.connection.readyState === 0) {
+    try {
+      await mongoose.connect(process.env.MONGO_URL);
+      console.log("Database connected successfully");
+    } catch (error) {
+      console.error("Database connection error:", error);
+      throw new Error("Database connection failed");
+    }
+  }
+};
 
 export async function POST(req) {
-  const body = await req.json();
-  mongoose.connect(process.env.MONGO_URL);
-  const createdUser = await User.create(body);
-  const pass = body.password;
-  if (!pass?.length || pass.length < 5) {
-    new Error("password must be at least 5 characters");
-  }
+  try {
+    const body = await req.json();
+    await connectDB();
 
-  return Response.json(createdUser);
+    // The password validation is handled in the User schema
+    const createdUser = await User.create(body);
+    return NextResponse.json(createdUser);
+  } catch (error) {
+    console.error("Error creating user:", error.message);
+    return NextResponse.json(error.message, { status: 500 });
+  }
 }
 
 //food-ordering-app

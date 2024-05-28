@@ -20,9 +20,11 @@ export default function MenuItem() {
       <p className="text-gray-500 text-sm">
         Lorem ipsum dolor sit amet consectetur adipisicing elit
       </p>
-      <button className="bg-primary text-white rounded-full my-2 px-6 py-2">
-        Add to cart $12
-      </button>
+      <div className=" max-w-56 mx-auto">
+        <button className="bg-primary text-white rounded-full my-2 px-6 py-2">
+          Add to cart $12
+        </button>
+      </div>
     </div>
   );
 }

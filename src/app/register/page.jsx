@@ -9,23 +9,25 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [creatingUser, setCreatingUser] = useState(false);
   const [userCreated, setUserCreated] = useState(false);
-  const [registerError, setRegisterError] = useState(true);
+  const [registerError, setRegisterError] = useState(false);
 
   async function handleFormSubmit(ev) {
     ev.preventDefault();
     setCreatingUser(true);
+    setUserCreated(false);
+    setRegisterError(false);
     try {
       const response = await axios.post("/api/register", {
         email,
         password,
       });
       console.log("User registered successfully:", response.data);
-      setCreatingUser(false);
       setUserCreated(true);
     } catch (error) {
       console.error("Error registering user:", error);
       setRegisterError(true);
     }
+    setCreatingUser(false);
   }
 
   return (
@@ -85,6 +87,12 @@ export default function RegisterPage() {
             />
             Login with Google
           </button>
+          <div className="text-center mt-4 text-gray-600 border-t pt-4">
+            Existing account?{" "}
+            <Link className="font-medium underline" href={"/login"}>
+              Login here
+            </Link>
+          </div>
         </form>
       </section>
     </>
