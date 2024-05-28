@@ -50,9 +50,3 @@ const handler = NextAuth({
 });
 
 export { handler as GET, handler as POST };
-
-// MONGO_URL="mongodb+srv://food-ordering-app:t683tmrvEE5sVPpv@cluster0.gnieq35.mongodb.net/food-ordering-app"
-// NEXTAUTH_URL="http://localhost:3000/"
-// SECRET="adlkfasdkfljakjfaldskfaj"
-// GOOGLE_CLIENT_ID="621525719284-2iklpv51jjusvquipgi8bbtscc3i8dka.apps.googleusercontent.com"
-// GOOGLE_CLIENT_SECRET="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"
