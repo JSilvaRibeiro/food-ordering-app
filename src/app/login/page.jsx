@@ -4,37 +4,64 @@ import React from "react";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
+import { signIn } from "next-auth/react";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loggingIn, setLoggingIn] = useState(false);
+
+  async function handleFormSubmit(ev) {
+    ev.preventDefault();
+    setLoggingIn(true);
+    // try {
+    //   const response = await axios.post("/api/login", { email, password });
+    //   console.log("User logged in successfully:", response.data);
+    // } catch (error) {
+    //   console.error("Error logging in user:", error);
+    // }
+    await signIn("credentials", {
+      username: email,
+      password,
+      callbackUrl: "/",
+    });
+    setLoggingIn(false);
+  }
+
   return (
     <section className="mt-8">
       <h1 className="text-center text-primary text-4xl font-semibold mb-6">
         Login
       </h1>
-      <form action="" className="block max-w-xs mx-auto">
+      <form className="block max-w-xs mx-auto" onSubmit={handleFormSubmit}>
         <input
           type="email"
-          name=""
+          name="email"
           id=""
           placeholder="Email"
           value={email}
-          disabled={false}
+          disabled={loggingIn}
           onChange={(ev) => setEmail(ev.target.value)}
         />
         <input
           type="password"
-          name=""
+          name="password"
           id=""
           placeholder="Password"
           value={password}
-          disabled={false}
+          disabled={loggingIn}
           onChange={(ev) => setPassword(ev.target.value)}
         />
-        <button type="submit">Login</button>
+        <button className="mt-6" type="submit" disabled={loggingIn}>
+          Login
+        </button>
         <div className="text-center my-4 text-gray-500">or</div>
-        <button className="flex gap-4 justify-center">
+        <button
+          type="button"
+          onClick={() => signIn("google", { callbackUrl: "/" })}
+          className="flex gap-4 justify-center"
+        >
           <Image
             src="/googleIcon.png"
             alt="Google Icon"
