@@ -6,6 +6,7 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 
 export default function RegisterPage() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [creatingUser, setCreatingUser] = useState(false);
@@ -19,6 +20,7 @@ export default function RegisterPage() {
     setRegisterError(false);
     try {
       const response = await axios.post("/api/register", {
+        name,
         email,
         password,
       });
@@ -58,9 +60,19 @@ export default function RegisterPage() {
           method="post"
         >
           <input
+            type="text"
+            name="name"
+            id="name"
+            placeholder="Name"
+            value={name}
+            disabled={creatingUser}
+            onChange={(ev) => setName(ev.target.value)}
+          />
+
+          <input
             type="email"
-            name=""
-            id=""
+            name="email"
+            id="email"
             placeholder="Email"
             value={email}
             disabled={creatingUser}
@@ -68,8 +80,8 @@ export default function RegisterPage() {
           />
           <input
             type="password"
-            name=""
-            id=""
+            name="password"
+            id="password"
             placeholder="Password"
             value={password}
             disabled={creatingUser}

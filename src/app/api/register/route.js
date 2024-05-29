@@ -18,10 +18,21 @@ const connectDB = async () => {
 export async function POST(req) {
   try {
     const body = await req.json();
+    const { name, email, password } = body;
+
+    // Validate the received fields
+    if (!name || !email || !password) {
+      throw new Error("All fields are required");
+    }
+
     await connectDB();
 
     // The password validation is handled in the User schema
-    const createdUser = await User.create(body);
+    const createdUser = await User.create({
+      name,
+      email,
+      password,
+    });
     return NextResponse.json(createdUser);
   } catch (error) {
     console.error("Error creating user:", error.message);

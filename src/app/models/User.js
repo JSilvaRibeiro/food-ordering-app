@@ -3,6 +3,17 @@ import bcrypt from "bcrypt";
 
 const UserSchema = new Schema(
   {
+    name: {
+      type: String,
+      required: true,
+      validate: {
+        validator: function (name) {
+          return name.length > 0;
+        },
+        message: "Name is required",
+      },
+    },
+
     email: {
       type: String,
       required: true,
