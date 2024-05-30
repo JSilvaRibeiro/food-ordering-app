@@ -36,11 +36,7 @@ export const authOptions = {
         const passwordOk = user && bcrypt.compareSync(password, user.password);
 
         if (passwordOk) {
-          return {
-            id: user._id,
-            email: user.email,
-            name: user.name,
-          };
+          return user;
         }
 
         return null;

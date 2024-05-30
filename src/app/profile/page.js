@@ -5,29 +5,69 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
+import toast from "react-hot-toast";
+
 const ProfilePage = () => {
   const session = useSession();
   const { status } = session;
-  const [infoUpdated, setInfoUpdated] = useState(false);
   const [userName, setUserName] = useState("");
+  const [userImage, setUserImage] = useState("");
 
   useEffect(() => {
     if (status === "authenticated") {
-      setUserName(session.data.user.name || "");
+      fetchUserData();
     }
   }, [status, session]);
 
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get("/api/profile");
+      const { name, image } = response.data;
+      setUserName(name);
+      setUserImage(image);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  //Handles user profile save
   async function handleProfileInfoUpdate(ev) {
     ev.preventDefault();
-    setInfoUpdated(false);
-    const response = await axios.put("/api/profile", { name: userName });
-    if (response.ok) {
-      setInfoUpdated(true);
-    }
+    const saveProfile = async () => {
+      const response = await axios.put("/api/profile", {
+        name: userName,
+        image: userImage,
+      });
+      if (response.statusText === "OK") {
+        fetchUserData();
+      }
+    };
+    toast.promise(saveProfile(), {
+      loading: "Saving...",
+      success: <b>Profile saved!</b>,
+      error: <b>Could not save profile.</b>,
+    });
   }
 
-  function handleFileChange(ev) {
-    console.log(ev);
+  //Handles user profile image upload
+  async function handleFileChange(ev) {
+    const files = ev.target.files;
+    if (files?.length === 1) {
+      const data = new FormData();
+      data.set("file", files[0]);
+
+      const uploadPromise = async () => {
+        const response = await axios.post("/api/upload", data);
+        const link = response.data;
+        setUserImage(link);
+      };
+
+      toast.promise(uploadPromise(), {
+        loading: "Uploading...",
+        success: <b>Image uploaded successfully!</b>,
+        error: <b>Could not upload image.</b>,
+      });
+    }
   }
 
   if (status === "loading") {
@@ -38,7 +78,6 @@ const ProfilePage = () => {
     return redirect("/login");
   }
 
-  const userImage = session.data.user.image;
   return (
     <section className="mt-8">
       <h1 className="text-center text-primary text-4xl font-semibold mb-6">
@@ -46,21 +85,21 @@ const ProfilePage = () => {
       </h1>
 
       <div className="max-w-md mx-auto ">
-        {infoUpdated && (
-          <div className="text-center bg-green-200 rounded-md mx-auto px-4 py-2">
-            User info updated!
-          </div>
-        )}
+        {/* {isSaving && <LoadingMessage>Saving...</LoadingMessage>}
+        {infoUpdated && <SuccessMessage>User info updated!</SuccessMessage>} */}
 
         <div className="flex gap-4 items-center">
-          <div className="p-2 relative">
-            <Image
-              className="rounded-full w-full h-full mb-1"
-              src={userImage}
-              width={200}
-              height={200}
-              alt="avatar"
-            />
+          <div className="p-2 relative max-w-[120px]">
+            {userImage && (
+              <Image
+                className="rounded-full w-full h-full mb-1"
+                src={userImage}
+                width={200}
+                height={200}
+                alt="avatar"
+              />
+            )}
+
             <label>
               <input
                 type="file"
