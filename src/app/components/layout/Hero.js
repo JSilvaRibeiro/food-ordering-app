@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="hero mt-4">
+    <section className="hero mt-4 flex items-center justify-between">
       <div className="py-12">
         <h1 className="text-4xl font-bold">
           Everything
@@ -31,14 +31,16 @@ export default function Hero() {
           </Link>
         </div>
       </div>
-      <div className="relative">
-        <Image
-          src="/pizza.png"
-          objectFit="contain"
-          layout="fill"
-          alt="pizza"
-          priority
-        />
+      <div className="relative block flex-shrink-0 -translate-x-10">
+        <div className="relative w-full h-96">
+          <Image
+            src="/pizza.png"
+            objectFit="contain"
+            layout="fill"
+            alt="pizza"
+            priority
+          />
+        </div>
       </div>
     </section>
   );

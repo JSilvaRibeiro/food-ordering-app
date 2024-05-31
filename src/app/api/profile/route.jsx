@@ -9,20 +9,8 @@ export async function PUT(req) {
   const session = await getServerSession(authOptions);
   const email = session.user.email;
 
-  const update = {};
-
-  if ("name" in data) {
-    update.name = data.name;
-  }
-
-  if ("image" in data) {
-    update.image = data.image;
-  }
-
-  if (Object.keys(update).length > 0) {
-    const result = await User.updateOne({ email }, update);
-    console.log({ email, update: { name: data.name } });
-  }
+  const result = await User.updateOne({ email }, data);
+  console.log({ email, update: data });
   return Response.json(true);
 }
 
@@ -36,7 +24,12 @@ export async function GET(req) {
   if (user) {
     return Response.json({
       name: user.name,
-      image: user.image,
+      userImage: user.image,
+      phoneNumber: user.phoneNumber,
+      streetAddress: user.streetAddress,
+      city: user.city,
+      postalCode: user.postalCode,
+      isAdmin: user.admin,
     });
   }
 

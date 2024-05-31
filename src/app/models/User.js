@@ -38,6 +38,22 @@ const UserSchema = new Schema(
     image: {
       type: String,
     },
+    phoneNumber: {
+      type: String,
+    },
+    streetAddress: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    postalCode: {
+      type: String,
+    },
+    admin: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

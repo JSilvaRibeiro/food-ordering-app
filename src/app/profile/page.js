@@ -4,14 +4,21 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import React, { useEffect, useState } from "react";
-
 import toast from "react-hot-toast";
+import avatarIcon from "../../../public/avatarIcon.jpg";
+import Link from "next/link";
+import UserTabs from "../components/layout/UserTabs";
 
 const ProfilePage = () => {
   const session = useSession();
   const { status } = session;
   const [userName, setUserName] = useState("");
-  const [userImage, setUserImage] = useState("");
+  const [userImage, setUserImage] = useState(avatarIcon);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [city, setCity] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -22,9 +29,22 @@ const ProfilePage = () => {
   const fetchUserData = async () => {
     try {
       const response = await axios.get("/api/profile");
-      const { name, image } = response.data;
-      setUserName(name);
-      setUserImage(image);
+      const {
+        name,
+        userImage,
+        phoneNumber,
+        streetAddress,
+        city,
+        postalCode,
+        isAdmin,
+      } = response.data;
+      setUserName(name || "");
+      setUserImage(userImage || avatarIcon);
+      setPhoneNumber(phoneNumber || "");
+      setStreetAddress(streetAddress || "");
+      setCity(city || "");
+      setPostalCode(postalCode || "");
+      setIsAdmin(isAdmin || false);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -37,6 +57,11 @@ const ProfilePage = () => {
       const response = await axios.put("/api/profile", {
         name: userName,
         image: userImage,
+        phoneNumber,
+        streetAddress,
+        city,
+        postalCode,
+        isAdmin,
       });
       if (response.statusText === "OK") {
         fetchUserData();
@@ -80,19 +105,13 @@ const ProfilePage = () => {
 
   return (
     <section className="mt-8">
-      <h1 className="text-center text-primary text-4xl font-semibold mb-6">
-        Profile
-      </h1>
-
-      <div className="max-w-md mx-auto ">
-        {/* {isSaving && <LoadingMessage>Saving...</LoadingMessage>}
-        {infoUpdated && <SuccessMessage>User info updated!</SuccessMessage>} */}
-
-        <div className="flex gap-4 items-center">
+      <UserTabs isAdmin={isAdmin} />
+      <div className="max-w-md mx-auto mt-8">
+        <div className="flex gap-4">
           <div className="p-2 relative max-w-[120px]">
             {userImage && (
               <Image
-                className="rounded-full w-full h-full mb-1"
+                className="rounded-full mb-1"
                 src={userImage}
                 width={200}
                 height={200}
@@ -114,6 +133,7 @@ const ProfilePage = () => {
             </label>
           </div>
           <form action="" className="grow" onSubmit={handleProfileInfoUpdate}>
+            <label>Full name</label>
             <input
               type="text"
               name=""
@@ -122,13 +142,49 @@ const ProfilePage = () => {
               value={userName}
               onChange={(ev) => setUserName(ev.target.value)}
             />
+            <label>Email</label>
             <input
               type="email"
               name="email"
               id=""
               disabled={true}
-              value={session.data.user.email}
+              value={session.data.user.email || ""}
             />
+            <label>Phone</label>
+            <input
+              type="tel"
+              placeholder="Phone number"
+              value={phoneNumber}
+              onChange={(ev) => setPhoneNumber(ev.target.value)}
+            />
+            <label>Street Address</label>
+            <input
+              type="text"
+              placeholder="Street Address"
+              value={streetAddress}
+              onChange={(ev) => setStreetAddress(ev.target.value)}
+            />
+            <div className="flex gap-2">
+              <div>
+                <label>City</label>
+                <input
+                  type="text"
+                  placeholder="City"
+                  value={city}
+                  onChange={(ev) => setCity(ev.target.value)}
+                />
+              </div>
+              <div>
+                <label>Postal Code</label>
+                <input
+                  type="text"
+                  placeholder="Postal Code"
+                  value={postalCode}
+                  onChange={(ev) => setPostalCode(ev.target.value)}
+                />
+              </div>
+            </div>
+
             <button type="submit">Save</button>
           </form>
         </div>
