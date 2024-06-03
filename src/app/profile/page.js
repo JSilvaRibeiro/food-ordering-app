@@ -1,13 +1,13 @@
 "use client";
-import axios from "axios";
+import axios, { Axios } from "axios";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import avatarIcon from "../../../public/avatarIcon.jpg";
-import Link from "next/link";
 import UserTabs from "../components/layout/UserTabs";
+import UploadImage from "../components/layout/UploadImage";
 
 const ProfilePage = () => {
   const session = useSession();
@@ -74,27 +74,6 @@ const ProfilePage = () => {
     });
   }
 
-  //Handles user profile image upload
-  async function handleFileChange(ev) {
-    const files = ev.target.files;
-    if (files?.length === 1) {
-      const data = new FormData();
-      data.set("file", files[0]);
-
-      const uploadPromise = async () => {
-        const response = await axios.post("/api/upload", data);
-        const link = response.data;
-        setUserImage(link);
-      };
-
-      toast.promise(uploadPromise(), {
-        loading: "Uploading...",
-        success: <b>Image uploaded successfully!</b>,
-        error: <b>Could not upload image.</b>,
-      });
-    }
-  }
-
   if (status === "loading") {
     return "loading...";
   }
@@ -109,31 +88,10 @@ const ProfilePage = () => {
       <div className="max-w-md mx-auto mt-8">
         <div className="flex gap-4">
           <div className="p-2 relative max-w-[120px]">
-            {userImage && (
-              <Image
-                className="rounded-full mb-1"
-                src={userImage}
-                width={200}
-                height={200}
-                alt="avatar"
-              />
-            )}
-
-            <label>
-              <input
-                type="file"
-                name=""
-                id=""
-                className="hidden"
-                onChange={handleFileChange}
-              />
-              <span className="block border border-gray-300 rounded-lg text-center cursor-pointer">
-                Edit
-              </span>
-            </label>
+            <UploadImage link={userImage} setLink={setUserImage} />
           </div>
           <form action="" className="grow" onSubmit={handleProfileInfoUpdate}>
-            <label>Full name</label>
+            <label>Full Name</label>
             <input
               type="text"
               name=""
