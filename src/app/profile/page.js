@@ -10,8 +10,8 @@ import UserTabs from "../components/layout/UserTabs";
 import UploadImage from "../components/layout/UploadImage";
 
 const ProfilePage = () => {
-  const session = useSession();
-  const { status } = session;
+  const { data: session, status } = useSession();
+
   const [userName, setUserName] = useState("");
   const [userImage, setUserImage] = useState(avatarIcon);
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -24,7 +24,7 @@ const ProfilePage = () => {
     if (status === "authenticated") {
       fetchUserData();
     }
-  }, [status, session]);
+  }, [status]);
 
   const fetchUserData = async () => {
     try {
@@ -54,17 +54,21 @@ const ProfilePage = () => {
   async function handleProfileInfoUpdate(ev) {
     ev.preventDefault();
     const saveProfile = async () => {
-      const response = await axios.put("/api/profile", {
-        name: userName,
-        image: userImage,
-        phoneNumber,
-        streetAddress,
-        city,
-        postalCode,
-        isAdmin,
-      });
-      if (response.statusText === "OK") {
-        fetchUserData();
+      try {
+        const response = await axios.put("/api/profile", {
+          name: userName,
+          image: userImage,
+          phoneNumber,
+          streetAddress,
+          city,
+          postalCode,
+          isAdmin,
+        });
+        if (response.status === 200) {
+          fetchUserData();
+        }
+      } catch (error) {
+        throw error;
       }
     };
     toast.promise(saveProfile(), {
@@ -106,7 +110,7 @@ const ProfilePage = () => {
               name="email"
               id=""
               disabled={true}
-              value={session.data.user.email || ""}
+              value={session?.user?.email || ""}
             />
             <label>Phone</label>
             <input

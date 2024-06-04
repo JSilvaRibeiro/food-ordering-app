@@ -2,19 +2,18 @@
 
 import { useState } from "react";
 import UseProfile from "../../components/UseProfile";
-import UploadImage from "../../components/layout/UploadImage";
+
 import UserTabs from "../../components/layout/UserTabs";
-import pizzaPic from "@/app/components/icons/menuItemPlaceholder.png";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import LeftArrow from "@/app/components/icons/LeftArrow";
+import { redirect } from "next/navigation";
+import MenuItemForm from "@/app/components/layout/MenuItemForm";
 
 const NewMenuItemPage = () => {
   const { loading, data } = UseProfile();
-  const [menuImage, setMenuImage] = useState(pizzaPic);
-  const [itemName, setItemName] = useState("");
-  const [itemDescription, setItemDescription] = useState("");
-  const [itemPrice, setItemPrice] = useState("");
+  const [redirectToItems, setRedirectToItems] = useState(false);
 
   async function handleFormSubmit(ev) {
     ev.preventDefault();
@@ -29,9 +28,8 @@ const NewMenuItemPage = () => {
           price: itemPrice,
         });
 
-        if (response.statusText == "OK") {
-          //clear input fields
-          //refresh menu items list
+        if (response.status === 200) {
+          setRedirectToItems(true);
         }
       } catch (error) {
         throw error;
@@ -45,6 +43,10 @@ const NewMenuItemPage = () => {
     });
   }
 
+  if (redirectToItems) {
+    return redirect("/menu-items/");
+  }
+
   if (loading) {
     return "Loading...";
   }
@@ -56,12 +58,13 @@ const NewMenuItemPage = () => {
   return (
     <section className="mt-8 max-w-md mx-auto">
       <UserTabs isAdmin={true} />
-      <div className="mt-8 max-w-xs mx-auto">
+      <div className="mt-8 max-w-fit mx-auto">
         <Link href={"/menu-items"} className="button">
+          <LeftArrow />
           <span>Show all menu items</span>
         </Link>
       </div>
-      <form onSubmit={handleFormSubmit} className="mt-8">
+      {/* <form onSubmit={handleFormSubmit} className="mt-8">
         <div
           className="grid gap-4 items-start"
           style={{ gridTemplateColumns: ".3fr .7fr" }}
@@ -91,7 +94,8 @@ const NewMenuItemPage = () => {
             <button type="submit">Save</button>
           </div>
         </div>
-      </form>
+      </form> */}
+      <MenuItemForm onSubmit={handleFormSubmit} menuItem={null} />
     </section>
   );
 };

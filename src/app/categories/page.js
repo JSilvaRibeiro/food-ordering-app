@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import UserTabs from "../components/layout/UserTabs";
 import axios from "axios";
-import { redirect } from "next/navigation";
+
 import UseProfile from "../components/UseProfile";
 import toast from "react-hot-toast";
 
@@ -113,7 +113,7 @@ const CategoriesPage = () => {
                 setCategoryName(category.name);
               }}
               key={category.name}
-              className="bg-gray-200 rounded-xl p-2 px-4 flex mb-1"
+              className="rounded-xl p-2 px-4 flex mb-1"
             >
               <span>{category.name}</span>
             </button>

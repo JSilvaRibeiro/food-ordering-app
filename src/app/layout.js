@@ -3,7 +3,6 @@ import Header from "./components/layout/Header";
 import AppProvider from "./components/AppContext";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import Head from "next/head";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 
