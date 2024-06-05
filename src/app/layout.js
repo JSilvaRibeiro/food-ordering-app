@@ -9,9 +9,6 @@ const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] });
 export const metadata = {
   title: "ST Pizza",
   description: "",
-  icons: {
-    icon: "icon.svg",
-  },
 };
 
 export default function RootLayout({ children }) {

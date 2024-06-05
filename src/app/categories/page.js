@@ -6,6 +6,8 @@ import axios from "axios";
 
 import UseProfile from "../components/UseProfile";
 import toast from "react-hot-toast";
+import EditIcon from "../components/icons/EditIcon";
+import TrashIcon from "../components/icons/TrashIcon";
 
 const CategoriesPage = () => {
   const { loading, data } = UseProfile();
@@ -64,6 +66,25 @@ const CategoriesPage = () => {
     });
   };
 
+  async function handleDeleteClick(_id) {
+    const deleteCategory = async () => {
+      try {
+        const response = await axios.delete("/api/categories?_id=" + _id);
+        if (response.status === 200) {
+          fetchCategories();
+        }
+      } catch (error) {
+        console.error("Error deleting category", error);
+        throw error;
+      }
+    };
+    toast.promise(deleteCategory(), {
+      loading: "Deleting category...",
+      success: "Category deleted successfully!",
+      error: "Error deleting category",
+    });
+  }
+
   if (loading) {
     return "Loading...";
   }
@@ -98,25 +119,39 @@ const CategoriesPage = () => {
               }}
             />
           </div>
-          <div className="pt-3">
+          <div className="pt-3 flex gap-1">
             <button type="submit">{editCategory ? "Update" : "Create"}</button>
+            <button>Cancel</button>
           </div>
         </div>
       </form>
       <div>
-        <h2 className="mt-8 text-sm text-gray-500">Edit Categories:</h2>
+        <h2 className="mt-8 text-sm text-gray-500">Exisiting Categories:</h2>
         {categoryList?.length > 0 &&
           categoryList.map((category) => (
-            <button
-              onClick={() => {
-                setEditCategory(category);
-                setCategoryName(category.name);
-              }}
-              key={category.name}
-              className="rounded-xl p-2 px-4 flex mb-1"
+            <div
+              key={category._id}
+              className="bg-gray-100 rounded-xl p-2 px-4 flex mb-1 space justify-between items-center"
             >
               <span>{category.name}</span>
-            </button>
+              <div className="flex gap-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditCategory(category);
+                    setCategoryName(category.name);
+                  }}
+                >
+                  <EditIcon />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDeleteClick(category._id)}
+                >
+                  <TrashIcon />
+                </button>
+              </div>
+            </div>
           ))}
       </div>
     </section>
