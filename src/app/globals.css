@@ -12,13 +12,13 @@ input[type="password"],
 input[type="text"],
 input[type="tel"] {
   @apply block w-full my-2 rounded-xl;
-  @apply border p-2 border-gray-300 bg-gray-200;
+  @apply border p-2 border-gray-300 bg-gray-50;
 }
 input[type="email"]:disabled,
 input[type="password"]:disabled,
 input[type="tel"]:disabled,
 input[type="text"]:disabled {
-  @apply bg-gray-100 border-0 text-gray-500;
+  @apply bg-gray-200 border-0 text-gray-500;
 }
 
 label {

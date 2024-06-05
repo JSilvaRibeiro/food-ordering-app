@@ -36,10 +36,10 @@ const MenuItemsPage = () => {
   return (
     <section className="mt-8 max-w-md mx-auto">
       <UserTabs isAdmin={true} />
-      <div className="mt-8 max-w-fit mx-auto">
+      <div className="mt-8 max-w-full mx-auto">
         <Link className="button" href={"/menu-items/new"}>
-          Create New Menu Item
           <PlusSign />
+          Create New Menu Item
         </Link>
       </div>
       <div className="mt-2">

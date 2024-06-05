@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import UseProfile from "../../components/UseProfile";
-
 import UserTabs from "../../components/layout/UserTabs";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -15,17 +14,29 @@ const NewMenuItemPage = () => {
   const { loading, data } = UseProfile();
   const [redirectToItems, setRedirectToItems] = useState(false);
 
-  async function handleFormSubmit(ev) {
+  async function handleFormSubmit(
+    ev,
+    {
+      menuItemImage,
+      itemName,
+      itemDescription,
+      itemPrice,
+      sizes,
+      extraIngredients,
+    }
+  ) {
     ev.preventDefault();
     const saveMenuItem = async () => {
       try {
         const imageUrl =
-          typeof menuImage === "string" ? menuImage : menuImage.src;
+          typeof menuItemImage === "string" ? menuItemImage : menuItemImage.src;
         const response = await axios.post("/api/menu-items", {
           image: imageUrl,
           name: itemName,
           description: itemDescription,
           price: itemPrice,
+          sizes: sizes,
+          extraIngredients: extraIngredients,
         });
 
         if (response.status === 200) {
@@ -44,7 +55,7 @@ const NewMenuItemPage = () => {
   }
 
   if (redirectToItems) {
-    return redirect("/menu-items/");
+    return redirect("/menu-items");
   }
 
   if (loading) {
@@ -58,43 +69,12 @@ const NewMenuItemPage = () => {
   return (
     <section className="mt-8 max-w-md mx-auto">
       <UserTabs isAdmin={true} />
-      <div className="mt-8 max-w-fit mx-auto">
+      <div className="mt-8 max-w-full mx-auto">
         <Link href={"/menu-items"} className="button">
           <LeftArrow />
           <span>Show all menu items</span>
         </Link>
       </div>
-      {/* <form onSubmit={handleFormSubmit} className="mt-8">
-        <div
-          className="grid gap-4 items-start"
-          style={{ gridTemplateColumns: ".3fr .7fr" }}
-        >
-          <div>
-            <UploadImage link={menuImage} setLink={setMenuImage} />
-          </div>
-          <div className="grow">
-            <label>Item Name</label>
-            <input
-              type="text"
-              value={itemName}
-              onChange={(ev) => setItemName(ev.target.value)}
-            />
-            <label>Description</label>
-            <input
-              type="text"
-              value={itemDescription}
-              onChange={(ev) => setItemDescription(ev.target.value)}
-            />
-            <label>Base Price</label>
-            <input
-              type="text"
-              value={itemPrice}
-              onChange={(ev) => setItemPrice(ev.target.value)}
-            />
-            <button type="submit">Save</button>
-          </div>
-        </div>
-      </form> */}
       <MenuItemForm onSubmit={handleFormSubmit} menuItem={null} />
     </section>
   );

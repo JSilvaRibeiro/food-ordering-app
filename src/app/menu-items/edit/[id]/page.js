@@ -44,6 +44,8 @@ const EditMenuItemPage = () => {
           description: data.itemDescription,
           price: data.itemPrice,
           _id: id,
+          sizes: data.sizes,
+          extraIngredients: data.extraIngredients,
         });
 
         if (response.status === 200) {
@@ -76,7 +78,7 @@ const EditMenuItemPage = () => {
   return (
     <section className="mt-8 max-w-md mx-auto">
       <UserTabs isAdmin={true} />
-      <div className="mt-8 max-w-fit mx-auto">
+      <div className="mt-8 max-w-full mx-auto">
         <Link href={"/menu-items"} className="button">
           <LeftArrow />
           <span>Show All Menu Items</span>
