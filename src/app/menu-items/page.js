@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import PlusSign from "../components/icons/PlusSign";
+import EditIcon from "../components/icons/EditIcon";
 
 const MenuItemsPage = () => {
   const { loading, data } = UseProfile();
@@ -51,6 +52,7 @@ const MenuItemsPage = () => {
               key={menuItem.name}
               className="bg-gray-200 rounded-lg p-4 text-center"
             >
+              <EditIcon className="size-5" />
               <Image
                 src={menuItem.image}
                 width={75}

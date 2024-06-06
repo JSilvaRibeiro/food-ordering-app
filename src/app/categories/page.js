@@ -120,8 +120,18 @@ const CategoriesPage = () => {
             />
           </div>
           <div className="pt-3 flex gap-1">
-            <button type="submit">{editCategory ? "Update" : "Create"}</button>
-            <button>Cancel</button>
+            <button type="submit">{editCategory ? "Save" : "Create"}</button>
+            {editCategory && (
+              <button
+                type="button"
+                onClick={() => {
+                  setEditCategory(null);
+                  setCategoryName("");
+                }}
+              >
+                Cancel
+              </button>
+            )}
           </div>
         </div>
       </form>
@@ -131,11 +141,12 @@ const CategoriesPage = () => {
           categoryList.map((category) => (
             <div
               key={category._id}
-              className="bg-gray-100 rounded-xl p-2 px-4 flex mb-1 space justify-between items-center"
+              className="bg-gray-100 rounded-xl p-3.5 px-4 flex mb-1 space justify-between items-center"
             >
               <span>{category.name}</span>
-              <div className="flex gap-1">
+              <div className="flex gap-3">
                 <button
+                  className="border-hidden p-0"
                   type="button"
                   onClick={() => {
                     setEditCategory(category);
@@ -145,6 +156,7 @@ const CategoriesPage = () => {
                   <EditIcon />
                 </button>
                 <button
+                  className="border-hidden p-0"
                   type="button"
                   onClick={() => handleDeleteClick(category._id)}
                 >
