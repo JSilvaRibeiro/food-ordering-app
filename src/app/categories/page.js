@@ -8,6 +8,7 @@ import UseProfile from "../components/UseProfile";
 import toast from "react-hot-toast";
 import EditIcon from "../components/icons/EditIcon";
 import TrashIcon from "../components/icons/TrashIcon";
+import DeleteButton from "../components/DeleteButton";
 
 const CategoriesPage = () => {
   const { loading, data } = UseProfile();
@@ -90,11 +91,11 @@ const CategoriesPage = () => {
   }
 
   if (!data) {
-    return "not an admin";
+    return "Not an admin";
   }
 
   return (
-    <section className="mt-8 max-w-md mx-auto">
+    <section className="mt-8 max-w-2xl mx-auto">
       <UserTabs isAdmin={true} />
       <form className="mt-8" onSubmit={handleCategorySubmit}>
         <div className="flex gap-2 justify-center items-center">
@@ -123,6 +124,7 @@ const CategoriesPage = () => {
             <button type="submit">{editCategory ? "Save" : "Create"}</button>
             {editCategory && (
               <button
+                className="hover:bg-gray-300 px-4"
                 type="button"
                 onClick={() => {
                   setEditCategory(null);
@@ -141,12 +143,12 @@ const CategoriesPage = () => {
           categoryList.map((category) => (
             <div
               key={category._id}
-              className="bg-gray-100 rounded-xl p-3.5 px-4 flex mb-1 space justify-between items-center"
+              className="bg-gray-100 rounded-xl p-4 flex mb-1 space justify-between items-center"
             >
               <span>{category.name}</span>
               <div className="flex gap-3">
                 <button
-                  className="border-hidden p-0"
+                  className="border-hidden hover:border-solid p-1"
                   type="button"
                   onClick={() => {
                     setEditCategory(category);
@@ -155,13 +157,10 @@ const CategoriesPage = () => {
                 >
                   <EditIcon />
                 </button>
-                <button
-                  className="border-hidden p-0"
-                  type="button"
-                  onClick={() => handleDeleteClick(category._id)}
-                >
-                  <TrashIcon />
-                </button>
+                <DeleteButton
+                  label={<TrashIcon />}
+                  onDelete={() => handleDeleteClick(category._id)}
+                />
               </div>
             </div>
           ))}

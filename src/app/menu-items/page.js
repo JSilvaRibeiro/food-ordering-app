@@ -35,28 +35,27 @@ const MenuItemsPage = () => {
   }
 
   return (
-    <section className="mt-8 max-w-md mx-auto">
+    <section className="mt-8 max-w-2xl mx-auto">
       <UserTabs isAdmin={true} />
       <div className="mt-8 max-w-full mx-auto">
-        <Link className="button" href={"/menu-items/new"}>
+        <Link className="button hover:bg-gray-300" href={"/menu-items/new"}>
           <PlusSign />
           Create New Menu Item
         </Link>
       </div>
       <div className="mt-2">
         <h2 className="text-sm text-gray-500 mt-8">Edit Menu Items:</h2>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-4">
           {menuItemsList.map((menuItem) => (
             <Link
               href={"/menu-items/edit/" + menuItem._id}
               key={menuItem.name}
-              className="bg-gray-200 rounded-lg p-4 text-center"
+              className="flex flex-col justify-center bg-gray-200 rounded-lg p-4 text-center shadow-xl hover:bg-white"
             >
-              <EditIcon className="size-5" />
               <Image
                 src={menuItem.image}
-                width={75}
-                height={75}
+                width={90}
+                height={90}
                 alt="menu item image"
                 className="rounded-md mx-auto"
               />

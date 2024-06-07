@@ -2,6 +2,7 @@
 
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default function Header() {
   const session = useSession();
@@ -28,10 +29,13 @@ export default function Header() {
               </Link>
               <button
                 type="button"
-                onClick={() => signOut()}
+                onClick={() => {
+                  signOut();
+                  redirect("/login");
+                }}
                 className="bg-primary rounded-full px-8 py-2 text-white"
               >
-                logout
+                Logout
               </button>
             </>
           )}

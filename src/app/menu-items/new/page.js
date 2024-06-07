@@ -23,6 +23,7 @@ const NewMenuItemPage = () => {
       itemPrice,
       sizes,
       extraIngredients,
+      category,
     }
   ) {
     ev.preventDefault();
@@ -37,6 +38,7 @@ const NewMenuItemPage = () => {
           price: itemPrice,
           sizes: sizes,
           extraIngredients: extraIngredients,
+          category: category,
         });
 
         if (response.status === 200) {
@@ -67,10 +69,10 @@ const NewMenuItemPage = () => {
   }
 
   return (
-    <section className="mt-8 max-w-md mx-auto">
+    <section className="mt-8 max-w-lg mx-auto">
       <UserTabs isAdmin={true} />
       <div className="mt-8 max-w-full mx-auto">
-        <Link href={"/menu-items"} className="button">
+        <Link href={"/menu-items"} className="button hover:bg-gray-300">
           <LeftArrow />
           <span>Show all menu items</span>
         </Link>

@@ -32,3 +32,18 @@ export async function GET() {
     return NextResponse.json(await MenuItem.find());
   } catch (error) {}
 }
+
+export async function DELETE(req) {
+  try {
+    await mongoose.connect(process.env.MONGO_URL);
+    const _id = req.nextUrl.searchParams.get("_id");
+    await MenuItem.deleteOne({ _id });
+    return NextResponse.json(true);
+  } catch (error) {
+    console.error("Error deleting menu item:", error);
+    return NextResponse.json(
+      { error: "Error deleting menu item" },
+      { status: 500 }
+    );
+  }
+}

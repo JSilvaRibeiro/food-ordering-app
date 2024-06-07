@@ -2,14 +2,20 @@ import { useEffect, useState } from "react";
 import UploadImage from "./UploadImage";
 import pizzaPic from "@/app/components/icons/menuItemPlaceholder.png";
 import MenuItemPriceProps from "./MenuItemPriceProps";
+import { usePathname } from "next/navigation";
+import DeleteButton from "../DeleteButton";
+import axios from "axios";
 
-const MenuItemForm = ({ onSubmit, menuItem }) => {
+const MenuItemForm = ({ onSubmit, menuItem, onDelete }) => {
+  const path = usePathname();
   const [menuItemImage, setMenuItemImage] = useState(pizzaPic);
   const [itemName, setItemName] = useState("");
   const [itemDescription, setItemDescription] = useState("");
   const [itemPrice, setItemPrice] = useState("");
   const [sizes, setSizes] = useState([]);
   const [extraIngredients, setExtraIngredients] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     if (menuItem) {
@@ -19,12 +25,27 @@ const MenuItemForm = ({ onSubmit, menuItem }) => {
       setItemPrice(menuItem.price || "");
       setSizes(menuItem.sizes || []);
       setExtraIngredients(menuItem.extraIngredients || []);
+      setSelectedCategory(menuItem.category || "");
     }
   }, [menuItem]);
 
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  async function fetchCategories() {
+    try {
+      const response = await axios.get("/api/categories");
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching catergories", error);
+    }
+  }
+
   return (
     <form
-      onSubmit={(ev) =>
+      onSubmit={(ev) => {
+        ev.preventDefault();
         onSubmit(ev, {
           menuItemImage,
           itemName,
@@ -32,8 +53,9 @@ const MenuItemForm = ({ onSubmit, menuItem }) => {
           itemPrice,
           sizes,
           extraIngredients,
-        })
-      }
+          category: selectedCategory,
+        });
+      }}
       className="mt-8"
     >
       <div
@@ -56,6 +78,25 @@ const MenuItemForm = ({ onSubmit, menuItem }) => {
             value={itemDescription}
             onChange={(ev) => setItemDescription(ev.target.value)}
           />
+          <label>Category</label>
+          <select
+            name="category"
+            id="category"
+            value={selectedCategory}
+            onChange={(ev) => {
+              setSelectedCategory(ev.target.value);
+            }}
+          >
+            <option value="" disabled>
+              Select a category
+            </option>
+            {categories?.length > 0 &&
+              categories.map((category) => (
+                <option key={category._id} value={category._id}>
+                  {category.name}
+                </option>
+              ))}
+          </select>
           <label>Base Price</label>
           <input
             type="text"
@@ -74,7 +115,12 @@ const MenuItemForm = ({ onSubmit, menuItem }) => {
             props={extraIngredients}
             setProps={setExtraIngredients}
           />
-          <button type="submit">Save</button>
+          <div className="space-y-3">
+            <button type="submit">Save</button>
+            {path.includes("menu-items/edit") && (
+              <DeleteButton label="Delete this item" onDelete={onDelete} />
+            )}
+          </div>
         </div>
       </div>
     </form>

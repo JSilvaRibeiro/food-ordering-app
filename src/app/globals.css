@@ -3,10 +3,11 @@
 @tailwind utilities;
 
 section.hero {
-  @apply grid;
+  @apply block md:grid;
   grid-template-columns: 0.4fr 0.6fr;
 }
 
+select,
 input[type="email"],
 input[type="password"],
 input[type="text"],
@@ -36,8 +37,9 @@ button,
 }
 
 button[type="submit"],
-.submit {
-  @apply border-primary w-full bg-primary text-white;
+.submit,
+button.primary {
+  @apply border-primary w-full hover:bg-red-400 hover:border-red-400 bg-primary text-white;
 }
 
 button[type="submit"]:disabled,

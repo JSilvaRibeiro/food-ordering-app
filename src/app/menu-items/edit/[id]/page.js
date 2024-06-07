@@ -46,6 +46,7 @@ const EditMenuItemPage = () => {
           _id: id,
           sizes: data.sizes,
           extraIngredients: data.extraIngredients,
+          category: data.category,
         });
 
         if (response.status === 200) {
@@ -63,6 +64,25 @@ const EditMenuItemPage = () => {
     });
   }
 
+  async function handleDeleteClick() {
+    async function deleteItem() {
+      try {
+        const response = await axios.delete("/api/menu-items?_id=" + id);
+        if (response.status === 200) {
+          setRedirectToItems(true);
+        }
+      } catch (error) {
+        console.error("Error deleting item", error);
+        throw error;
+      }
+    }
+    toast.promise(deleteItem(), {
+      loading: "Deleting item...",
+      success: "Item deleted successfully!",
+      error: "Error deleting item",
+    });
+  }
+
   if (redirectToItems) {
     return redirect("/menu-items/");
   }
@@ -76,15 +96,19 @@ const EditMenuItemPage = () => {
   }
 
   return (
-    <section className="mt-8 max-w-md mx-auto">
+    <section className="mt-8 max-w-2xl mx-auto">
       <UserTabs isAdmin={true} />
-      <div className="mt-8 max-w-full mx-auto">
-        <Link href={"/menu-items"} className="button">
+      <div className="mt-8 max-w-2xl mx-auto">
+        <Link href={"/menu-items"} className="button hover:bg-gray-300">
           <LeftArrow />
           <span>Show All Menu Items</span>
         </Link>
       </div>
-      <MenuItemForm onSubmit={handleFormSubmit} menuItem={menuItem} />
+      <MenuItemForm
+        onSubmit={handleFormSubmit}
+        menuItem={menuItem}
+        onDelete={handleDeleteClick}
+      />
     </section>
   );
 };

@@ -1,0 +1,54 @@
+"use client";
+import { useEffect, useState } from "react";
+import UserTabs from "../components/layout/UserTabs";
+import UseProfile from "../components/UseProfile";
+import axios from "axios";
+
+const UsersPage = () => {
+  const { loading, data } = UseProfile();
+  const [userList, setUserList] = useState([]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("/api/users");
+      setUserList(response.data);
+    } catch (error) {
+      console.error("Error fetching users", error);
+    }
+  };
+
+  if (loading) {
+    return "Loading...";
+  }
+
+  if (!data) {
+    return "Not an admin";
+  }
+
+  return (
+    <section className="mt-8 max-2xl mx-auto">
+      <UserTabs isAdmin={true} />
+      <div>
+        <h1>Users List:</h1>
+        {userList?.length > 0 &&
+          userList.map((user) => (
+            <div className="bg-gray-300 rounded-lg mb-2 p-4" key={user._id}>
+              <div className="flex gap-2">
+                <span>{user.name}</span>
+                <span>{user.email}</span>
+              </div>
+              <div>
+                <button type="button">Edit Users</button>
+              </div>
+            </div>
+          ))}
+      </div>
+    </section>
+  );
+};
+
+export default UsersPage;

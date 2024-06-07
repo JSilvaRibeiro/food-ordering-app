@@ -9,25 +9,39 @@ const UserTabs = ({ isAdmin }) => {
 
   return (
     <div className="flex justify-center gap-2 tabs">
-      <Link className={path === "/profile" ? "active" : ""} href={"/profile"}>
+      <Link
+        className={path === "/profile" ? "active" : "hover:bg-gray-200"}
+        href={"/profile"}
+      >
         Profile
       </Link>
       {isAdmin && (
         <>
           <Link
-            className={path === "/categories" ? "active" : ""}
+            className={path === "/categories" ? "active" : "hover:bg-gray-200"}
             href={"/categories"}
           >
             Categories
           </Link>
           <Link
-            className={path.includes("menu-items") ? "active" : ""}
+            className={
+              path.includes("menu-items") ? "active" : "hover:bg-gray-200"
+            }
             href={"/menu-items"}
           >
             Menu Items
           </Link>
-          <Link className={path === "/users" ? "active" : ""} href={"/users"}>
+          <Link
+            className={path === "/users" ? "active" : "hover:bg-gray-200"}
+            href={"/users"}
+          >
             Users
+          </Link>
+          <Link
+            className={path === "/orders" ? "active" : "hover:bg-gray-200"}
+            href={"/orders"}
+          >
+            Orders
           </Link>
         </>
       )}
