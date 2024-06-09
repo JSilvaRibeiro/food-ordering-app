@@ -1,6 +1,6 @@
 "use client";
 import axios, { Axios } from "axios";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -13,13 +13,6 @@ import UserInfoForm from "../components/layout/UserInfoForm";
 const ProfilePage = () => {
   const { data: session, status } = useSession();
   const [userInfo, setUserInfo] = useState(null);
-
-  const [userName, setUserName] = useState("");
-  const [userImage, setUserImage] = useState(avatarIcon);
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [streetAddress, setStreetAddress] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [city, setCity] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
@@ -33,20 +26,26 @@ const ProfilePage = () => {
       const response = await axios.get("/api/profile");
       const {
         name,
-        userImage,
+        email,
+        image,
         phoneNumber,
         streetAddress,
         city,
         postalCode,
         isAdmin,
       } = response.data;
-      setUserInfo(response.data);
-      // setUserName(name || "");
-      // setUserImage(userImage || avatarIcon);
-      // setPhoneNumber(phoneNumber || "");
-      // setStreetAddress(streetAddress || "");
-      // setCity(city || "");
-      // setPostalCode(postalCode || "");
+
+      setUserInfo({
+        name,
+        email,
+        image,
+        phoneNumber,
+        streetAddress,
+        city,
+        postalCode,
+        isAdmin,
+      });
+
       setIsAdmin(isAdmin || false);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -54,19 +53,11 @@ const ProfilePage = () => {
   };
 
   //Handles user profile save
-  async function handleProfileInfoUpdate(ev) {
+  async function handleProfileInfoUpdate(ev, data) {
     ev.preventDefault();
     const saveProfile = async () => {
       try {
-        const response = await axios.put("/api/profile", {
-          name: userName,
-          image: userImage,
-          phoneNumber,
-          streetAddress,
-          city,
-          postalCode,
-          isAdmin,
-        });
+        const response = await axios.put("/api/profile", data);
         if (response.status === 200) {
           fetchUserData();
         }

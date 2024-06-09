@@ -44,7 +44,8 @@ export async function GET(req) {
     if (user) {
       return NextResponse.json({
         name: user.name,
-        userImage: user.image,
+        email: user.email,
+        image: user.image,
         phoneNumber: user.phoneNumber,
         streetAddress: user.streetAddress,
         city: user.city,

@@ -1,13 +1,28 @@
 import UploadImage from "./UploadImage";
-import avatarIcon from "../../../public/avatarIcon.jpg";
+import avatarIcon from "../../../../public/avatarIcon.jpg";
+import { useEffect, useState } from "react";
 
 const UserInfoForm = ({ user, onSave }) => {
-  const [userName, setUserName] = useState(user?.userName || "");
-  const [userImage, setUserImage] = useState(user?.userImage || avatarIcon);
-  const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || "");
-  const [streetAddress, setStreetAddress] = useState(user?.streetAddress || "");
-  const [postalCode, setPostalCode] = useState(user?.postalCode || "");
-  const [city, setCity] = useState(user?.city || "");
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userImage, setUserImage] = useState(avatarIcon);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [city, setCity] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      setUserName(user.name || "");
+      setUserEmail(user.email || "");
+      setUserImage(user.image || avatarIcon);
+      setPhoneNumber(user.phoneNumber || "");
+      setStreetAddress(user.streetAddress || "");
+      setPostalCode(user.postalCode || "");
+      setCity(user.city || "");
+      console.log(user.image);
+    }
+  }, [user]);
 
   return (
     <div className="flex gap-4">
@@ -19,8 +34,8 @@ const UserInfoForm = ({ user, onSave }) => {
         className="grow"
         onSubmit={(ev) =>
           onSave(ev, {
-            userName,
-            userImage,
+            name: userName,
+            image: userImage,
             phoneNumber,
             streetAddress,
             postalCode,
@@ -43,7 +58,7 @@ const UserInfoForm = ({ user, onSave }) => {
           name="email"
           id=""
           disabled={true}
-          value={session?.user?.email || ""}
+          value={userEmail}
         />
         <label>Phone</label>
         <input
