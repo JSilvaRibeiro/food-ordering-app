@@ -32,7 +32,7 @@ const UserTabs = ({ isAdmin }) => {
             Menu Items
           </Link>
           <Link
-            className={path === "/users" ? "active" : "hover:bg-gray-200"}
+            className={path.includes("users") ? "active" : "hover:bg-gray-200"}
             href={"/users"}
           >
             Users

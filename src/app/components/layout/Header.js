@@ -14,7 +14,7 @@ export default function Header() {
       <header className="flex items-center justify-between">
         <nav className="flex items-center gap-8 text-gray-500 font-semibold">
           <Link className="text-primary font-extrabold text-4xl" href="/">
-            ST PIZZA
+            JK Pizza
           </Link>
           <Link href={"/"}>Home</Link>
           <Link href={""}>Menu</Link>

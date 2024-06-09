@@ -8,9 +8,11 @@ import toast from "react-hot-toast";
 import avatarIcon from "../../../public/avatarIcon.jpg";
 import UserTabs from "../components/layout/UserTabs";
 import UploadImage from "../components/layout/UploadImage";
+import UserInfoForm from "../components/layout/UserInfoForm";
 
 const ProfilePage = () => {
   const { data: session, status } = useSession();
+  const [userInfo, setUserInfo] = useState(null);
 
   const [userName, setUserName] = useState("");
   const [userImage, setUserImage] = useState(avatarIcon);
@@ -38,12 +40,13 @@ const ProfilePage = () => {
         postalCode,
         isAdmin,
       } = response.data;
-      setUserName(name || "");
-      setUserImage(userImage || avatarIcon);
-      setPhoneNumber(phoneNumber || "");
-      setStreetAddress(streetAddress || "");
-      setCity(city || "");
-      setPostalCode(postalCode || "");
+      setUserInfo(response.data);
+      // setUserName(name || "");
+      // setUserImage(userImage || avatarIcon);
+      // setPhoneNumber(phoneNumber || "");
+      // setStreetAddress(streetAddress || "");
+      // setCity(city || "");
+      // setPostalCode(postalCode || "");
       setIsAdmin(isAdmin || false);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -90,66 +93,7 @@ const ProfilePage = () => {
     <section className="mt-8">
       <UserTabs isAdmin={isAdmin} />
       <div className="max-w-2xl mx-auto mt-8">
-        <div className="flex gap-4">
-          <div className="p-2 relative max-w-[120px]">
-            <UploadImage link={userImage} setLink={setUserImage} />
-          </div>
-          <form action="" className="grow" onSubmit={handleProfileInfoUpdate}>
-            <label>Full Name</label>
-            <input
-              type="text"
-              name=""
-              id=""
-              placeholder="First and Last Name"
-              value={userName}
-              onChange={(ev) => setUserName(ev.target.value)}
-            />
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              id=""
-              disabled={true}
-              value={session?.user?.email || ""}
-            />
-            <label>Phone</label>
-            <input
-              type="tel"
-              placeholder="Phone number"
-              value={phoneNumber}
-              onChange={(ev) => setPhoneNumber(ev.target.value)}
-            />
-            <label>Street Address</label>
-            <input
-              type="text"
-              placeholder="Street Address"
-              value={streetAddress}
-              onChange={(ev) => setStreetAddress(ev.target.value)}
-            />
-            <div className="flex gap-2">
-              <div>
-                <label>City</label>
-                <input
-                  type="text"
-                  placeholder="City"
-                  value={city}
-                  onChange={(ev) => setCity(ev.target.value)}
-                />
-              </div>
-              <div>
-                <label>Postal Code</label>
-                <input
-                  type="text"
-                  placeholder="Postal Code"
-                  value={postalCode}
-                  onChange={(ev) => setPostalCode(ev.target.value)}
-                />
-              </div>
-            </div>
-
-            <button type="submit">Save</button>
-          </form>
-        </div>
+        <UserInfoForm user={userInfo} onSave={handleProfileInfoUpdate} />
       </div>
     </section>
   );

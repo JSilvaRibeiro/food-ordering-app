@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import UserTabs from "../components/layout/UserTabs";
 import UseProfile from "../components/UseProfile";
 import axios from "axios";
+import Link from "next/link";
 
 const UsersPage = () => {
   const { loading, data } = UseProfile();
@@ -36,13 +37,21 @@ const UsersPage = () => {
         <h1>Users List:</h1>
         {userList?.length > 0 &&
           userList.map((user) => (
-            <div className="bg-gray-300 rounded-lg mb-2 p-4" key={user._id}>
-              <div className="flex gap-2">
-                <span>{user.name}</span>
-                <span>{user.email}</span>
+            <div
+              className="bg-gray-100 rounded-lg mb-2 p-2 px-4 flex gap-2 items-center justify-between"
+              key={user._id}
+            >
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 grow">
+                <span className="text-gray-700 font-semibold">{user.name}</span>
+                <span className="text-gray-500">{user.email}</span>
               </div>
               <div>
-                <button type="button">Edit Users</button>
+                <Link
+                  href={"/users/" + user._id}
+                  className="button hover:bg-gray-300"
+                >
+                  Edit
+                </Link>
               </div>
             </div>
           ))}
