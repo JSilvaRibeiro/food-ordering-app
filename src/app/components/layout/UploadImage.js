@@ -43,7 +43,7 @@ const UploadImage = ({ link, setLink }) => {
           className="hidden"
           onChange={handleFileChange}
         />
-        <span className="block border border-gray-300 rounded-lg text-center cursor-pointer max-w-16 mx-auto">
+        <span className="block border border-gray-300 rounded-lg hover:bg-gray-300 text-center cursor-pointer max-w-16 mx-auto">
           Edit
         </span>
       </label>

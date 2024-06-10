@@ -28,7 +28,7 @@ export async function PUT(req) {
   }
 }
 
-export async function GET(req) {
+export async function GET() {
   try {
     await mongoose.connect(process.env.MONGO_URL);
     const session = await getServerSession(authOptions);
@@ -50,7 +50,7 @@ export async function GET(req) {
         streetAddress: user.streetAddress,
         city: user.city,
         postalCode: user.postalCode,
-        isAdmin: user.admin,
+        admin: user.admin,
       });
     }
 

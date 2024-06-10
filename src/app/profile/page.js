@@ -13,7 +13,7 @@ import UserInfoForm from "../components/layout/UserInfoForm";
 const ProfilePage = () => {
   const { data: session, status } = useSession();
   const [userInfo, setUserInfo] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [admin, setAdmin] = useState(false);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -32,8 +32,9 @@ const ProfilePage = () => {
         streetAddress,
         city,
         postalCode,
-        isAdmin,
+        admin,
       } = response.data;
+      console.log(response.data);
 
       setUserInfo({
         name,
@@ -43,10 +44,11 @@ const ProfilePage = () => {
         streetAddress,
         city,
         postalCode,
-        isAdmin,
+        admin,
       });
 
-      setIsAdmin(isAdmin || false);
+      setAdmin(admin || false);
+      console.log(admin);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -82,7 +84,7 @@ const ProfilePage = () => {
 
   return (
     <section className="mt-8">
-      <UserTabs isAdmin={isAdmin} />
+      <UserTabs isAdmin={admin} />
       <div className="max-w-2xl mx-auto mt-8">
         <UserInfoForm user={userInfo} onSave={handleProfileInfoUpdate} />
       </div>

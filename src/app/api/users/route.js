@@ -1,5 +1,5 @@
 import { User } from "@/app/models/User";
-import axios from "axios";
+
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 
@@ -11,6 +11,7 @@ const connectDB = async () => {
 
 export async function GET() {
   try {
+    await connectDB();
     const users = await User.find();
     return NextResponse.json(users);
   } catch (error) {

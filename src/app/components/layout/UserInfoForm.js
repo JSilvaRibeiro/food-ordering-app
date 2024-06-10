@@ -10,6 +10,7 @@ const UserInfoForm = ({ user, onSave }) => {
   const [streetAddress, setStreetAddress] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [city, setCity] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -20,7 +21,7 @@ const UserInfoForm = ({ user, onSave }) => {
       setStreetAddress(user.streetAddress || "");
       setPostalCode(user.postalCode || "");
       setCity(user.city || "");
-      console.log(user.image);
+      setIsAdmin(user.admin || false);
     }
   }, [user]);
 
@@ -40,6 +41,7 @@ const UserInfoForm = ({ user, onSave }) => {
             streetAddress,
             postalCode,
             city,
+            isAdmin,
           })
         }
       >
@@ -74,7 +76,7 @@ const UserInfoForm = ({ user, onSave }) => {
           value={streetAddress}
           onChange={(ev) => setStreetAddress(ev.target.value)}
         />
-        <div className="flex gap-2">
+        <div className="grid grid-cols-2 gap-2">
           <div>
             <label>City</label>
             <input
@@ -93,6 +95,17 @@ const UserInfoForm = ({ user, onSave }) => {
               onChange={(ev) => setPostalCode(ev.target.value)}
             />
           </div>
+        </div>
+
+        <div className="flex gap-2 mb-2 p-2 items-center">
+          <input
+            className="cursor-pointer"
+            id="adminCb"
+            type="checkbox"
+            checked={isAdmin}
+            onChange={(ev) => setIsAdmin(ev.target.checked)}
+          />
+          <label htmlFor="adminCb">Admin</label>
         </div>
 
         <button type="submit">Save</button>

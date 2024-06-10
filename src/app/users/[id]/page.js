@@ -24,6 +24,7 @@ const EditUserPage = () => {
 
       const users = response.data;
       const user = users.find((i) => i._id === id);
+
       setUserInfo(user);
     } catch (error) {}
   }

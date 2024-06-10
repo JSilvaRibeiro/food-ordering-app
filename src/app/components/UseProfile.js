@@ -13,7 +13,7 @@ const UseProfile = () => {
     try {
       setLoading(true);
       const response = await axios.get("/api/profile");
-      setData(response.data.isAdmin);
+      setData(response.data.admin);
     } catch (error) {
       console.error("Error fetching user data:", error);
       setData(false);

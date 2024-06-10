@@ -13,7 +13,7 @@ input[type="password"],
 input[type="text"],
 input[type="tel"] {
   @apply block w-full my-2 rounded-xl;
-  @apply border p-2 border-gray-300 bg-gray-50;
+  @apply border p-2 border-gray-300 bg-gray-50 hover:bg-gray-300;
 }
 input[type="email"]:disabled,
 input[type="password"]:disabled,

@@ -30,6 +30,8 @@ const MenuItemsPage = () => {
     return "Loading...";
   }
 
+  console.log(data);
+
   if (!data) {
     return "not an admin";
   }
