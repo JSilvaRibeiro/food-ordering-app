@@ -6,19 +6,33 @@ import { NextResponse } from "next/server";
 
 export async function PUT(req) {
   try {
-    await mongoose.connect(process.env.MONGO_URL);
-    const data = await req.json();
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
-    const email = session.user.email;
+    await mongoose.connect(process.env.MONGO_URL);
 
-    const result = await User.updateOne({ email }, data);
-    console.log({ email, update: data });
-    return NextResponse.json(true);
+    const data = await req.json();
+    const { _id, ...otherUserInfo } = data;
+
+    let filter = {};
+
+    if (_id) {
+      filter = { _id };
+    } else {
+      const email = session.user.email;
+      filter = { email };
+    }
+
+    const updatedUser = await User.updateOne(filter, { $set: otherUserInfo });
+
+    if (updatedUser.nModified === 0) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error updating user:", error);
     return NextResponse.json(

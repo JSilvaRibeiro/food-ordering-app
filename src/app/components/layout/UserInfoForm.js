@@ -1,6 +1,7 @@
 import UploadImage from "./UploadImage";
 import avatarIcon from "../../../../public/avatarIcon.jpg";
 import { useEffect, useState } from "react";
+import UseProfile from "../UseProfile";
 
 const UserInfoForm = ({ user, onSave }) => {
   const [userName, setUserName] = useState("");
@@ -11,6 +12,7 @@ const UserInfoForm = ({ user, onSave }) => {
   const [postalCode, setPostalCode] = useState("");
   const [city, setCity] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
+  const { data: loggedInUserData } = UseProfile();
 
   useEffect(() => {
     if (user) {
@@ -35,13 +37,14 @@ const UserInfoForm = ({ user, onSave }) => {
         className="grow"
         onSubmit={(ev) =>
           onSave(ev, {
+            _id: user._id,
             name: userName,
             image: userImage,
             phoneNumber,
             streetAddress,
             postalCode,
             city,
-            isAdmin,
+            admin: isAdmin,
           })
         }
       >
@@ -96,17 +99,18 @@ const UserInfoForm = ({ user, onSave }) => {
             />
           </div>
         </div>
-
-        <div className="flex gap-2 mb-2 p-2 items-center">
-          <input
-            className="cursor-pointer"
-            id="adminCb"
-            type="checkbox"
-            checked={isAdmin}
-            onChange={(ev) => setIsAdmin(ev.target.checked)}
-          />
-          <label htmlFor="adminCb">Admin</label>
-        </div>
+        {loggedInUserData?.admin && (
+          <div className="flex gap-2 mb-2 p-2 items-center">
+            <input
+              className="cursor-pointer"
+              id="adminCb"
+              type="checkbox"
+              checked={isAdmin}
+              onChange={(ev) => setIsAdmin(ev.target.checked)}
+            />
+            <label htmlFor="adminCb">Admin</label>
+          </div>
+        )}
 
         <button type="submit">Save</button>
       </form>

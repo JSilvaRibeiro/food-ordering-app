@@ -26,7 +26,7 @@ const UsersPage = () => {
     return "Loading...";
   }
 
-  if (!data) {
+  if (!data.admin) {
     return "Not an admin";
   }
 

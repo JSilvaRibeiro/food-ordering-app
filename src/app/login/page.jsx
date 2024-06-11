@@ -15,12 +15,7 @@ const LoginPage = () => {
   async function handleFormSubmit(ev) {
     ev.preventDefault();
     setLoggingIn(true);
-    // try {
-    //   const response = await axios.post("/api/login", { email, password });
-    //   console.log("User logged in successfully:", response.data);
-    // } catch (error) {
-    //   console.error("Error logging in user:", error);
-    // }
+
     await signIn("credentials", {
       username: email,
       password,

@@ -33,7 +33,10 @@ const EditUserPage = () => {
     ev.preventDefault();
     async function saveUserInfo() {
       try {
-        const response = await axios.put("/api/profile", data);
+        let { image, ...otherUserData } = data;
+        image = typeof image === "string" ? image : image.src;
+        const updatedData = { image, ...otherUserData };
+        const response = await axios.put("/api/profile", updatedData);
 
         if (response.status === 200) {
           fetchUserInfo();
@@ -59,7 +62,7 @@ const EditUserPage = () => {
     return "Loading...";
   }
 
-  if (!data) {
+  if (!data.admin) {
     return "Not an admin";
   }
   return (

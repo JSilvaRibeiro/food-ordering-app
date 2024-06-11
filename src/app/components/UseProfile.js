@@ -13,14 +13,17 @@ const UseProfile = () => {
     try {
       setLoading(true);
       const response = await axios.get("/api/profile");
-      setData(response.data.admin);
+      console.log(response);
+      setData(response.data);
     } catch (error) {
       console.error("Error fetching user data:", error);
-      setData(false);
+      setData(null);
     } finally {
       setLoading(false);
     }
   };
+
+  console.log(data);
 
   return { loading, data };
 };

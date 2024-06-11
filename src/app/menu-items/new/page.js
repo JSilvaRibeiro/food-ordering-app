@@ -64,7 +64,7 @@ const NewMenuItemPage = () => {
     return "Loading...";
   }
 
-  if (!data) {
+  if (!data.admin) {
     return "not an admin";
   }
 

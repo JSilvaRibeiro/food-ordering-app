@@ -34,7 +34,6 @@ const ProfilePage = () => {
         postalCode,
         admin,
       } = response.data;
-      console.log(response.data);
 
       setUserInfo({
         name,
@@ -48,7 +47,6 @@ const ProfilePage = () => {
       });
 
       setAdmin(admin || false);
-      console.log(admin);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
