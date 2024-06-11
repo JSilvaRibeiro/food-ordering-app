@@ -27,10 +27,10 @@ const UploadImage = ({ link, setLink }) => {
     <>
       {link && (
         <Image
-          className="rounded-full mb-1"
+          className="rounded-lg w-full h-full mb-1"
           src={link}
-          width={200}
-          height={200}
+          width={250}
+          height={250}
           alt="avatar"
         />
       )}

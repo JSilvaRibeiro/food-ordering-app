@@ -62,7 +62,7 @@ const MenuItemForm = ({ onSubmit, menuItem, onDelete }) => {
         className="grid gap-4 items-start"
         style={{ gridTemplateColumns: ".3fr .7fr" }}
       >
-        <div>
+        <div className="">
           <UploadImage link={menuItemImage} setLink={setMenuItemImage} />
         </div>
         <div className="grow">

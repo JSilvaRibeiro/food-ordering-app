@@ -23,8 +23,6 @@ const UseProfile = () => {
     }
   };
 
-  console.log(data);
-
   return { loading, data };
 };
 

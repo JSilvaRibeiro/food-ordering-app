@@ -29,9 +29,12 @@ const UserInfoForm = ({ user, onSave }) => {
 
   return (
     <div className="flex gap-4">
-      <div className="p-2 relative max-w-[120px]">
-        <UploadImage link={userImage} setLink={setUserImage} />
+      <div>
+        <div className="p-2 relative rounded-lg max-w-[120px]">
+          <UploadImage link={userImage} setLink={setUserImage} />
+        </div>
       </div>
+
       <form
         action=""
         className="grow"

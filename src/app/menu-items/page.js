@@ -46,20 +46,23 @@ const MenuItemsPage = () => {
       <div className="mt-2">
         <h2 className="text-sm text-gray-500 mt-8">Edit Menu Items:</h2>
         <div className="grid grid-cols-3 gap-4">
-          {menuItemsList.map((menuItem) => (
+          {menuItemsList?.map((menuItem) => (
             <Link
               href={"/menu-items/edit/" + menuItem._id}
-              key={menuItem.name}
-              className="flex flex-col justify-center bg-gray-200 rounded-lg p-4 text-center shadow-xl hover:bg-white"
+              key={menuItem._id}
+              className="bg-gray-200 rounded-lg p-4"
             >
-              <Image
-                src={menuItem.image}
-                width={90}
-                height={90}
-                alt="menu item image"
-                className="rounded-md mx-auto"
-              />
-              {menuItem.name}
+              <div className="relative">
+                <Image
+                  src={menuItem.image}
+                  width={200}
+                  height={200}
+                  priority
+                  alt="menu item image"
+                  className="rounded-md"
+                />
+              </div>
+              <div className="text-center">{menuItem.name}</div>
             </Link>
           ))}
         </div>

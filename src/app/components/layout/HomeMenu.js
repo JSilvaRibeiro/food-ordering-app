@@ -1,9 +1,21 @@
+"use client";
 import Image from "next/legacy/image";
-import React from "react";
+import React, { useEffect } from "react";
 import MenuItem from "../menu/MenuItem";
 import SectionHeaders from "./SectionHeaders";
+import axios from "axios";
 
 export default function HomeMenu() {
+  useEffect(() => {
+    async function fetchMenuItems() {
+      const response = await axios.get("/api/menu-items");
+
+      const latestMenuItems = response.data.slice(-3);
+      console.log(latestMenuItems);
+    }
+
+    fetchMenuItems();
+  }, []);
   return (
     <section>
       <div className="absolute left-0 right-0 w-full justify-start">
@@ -25,7 +37,10 @@ export default function HomeMenu() {
         </div>
       </div>
       <div className="text-center">
-        <SectionHeaders subHeader={"check out"} mainHeader={"Menu"} />
+        <SectionHeaders
+          subHeader={"check out"}
+          mainHeader={"Our Best Sellers"}
+        />
       </div>
       <div className="grid grid-cols-3 gap-4 my-4  mx-auto">
         <MenuItem />

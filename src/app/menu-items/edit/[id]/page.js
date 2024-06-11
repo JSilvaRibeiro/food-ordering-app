@@ -36,10 +36,11 @@ const EditMenuItemPage = () => {
 
   async function handleFormSubmit(ev, data) {
     ev.preventDefault();
+
     const saveMenuItem = async () => {
       try {
         const response = await axios.put("/api/menu-items", {
-          image: data.menuImage,
+          image: data.menuItemImage,
           name: data.itemName,
           description: data.itemDescription,
           price: data.itemPrice,
