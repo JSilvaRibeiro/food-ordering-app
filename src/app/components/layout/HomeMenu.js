@@ -1,17 +1,18 @@
 "use client";
 import Image from "next/legacy/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MenuItem from "../menu/MenuItem";
 import SectionHeaders from "./SectionHeaders";
 import axios from "axios";
 
 export default function HomeMenu() {
+  const [featuredMenuItems, setFeaturedMenuItems] = useState([]);
   useEffect(() => {
     async function fetchMenuItems() {
       const response = await axios.get("/api/menu-items");
 
-      const latestMenuItems = response.data.slice(-3);
-      console.log(latestMenuItems);
+      const latestMenuItems = response.data.slice(5, 8);
+      setFeaturedMenuItems(latestMenuItems);
     }
 
     fetchMenuItems();
@@ -42,13 +43,13 @@ export default function HomeMenu() {
           mainHeader={"Our Best Sellers"}
         />
       </div>
-      <div className="grid grid-cols-3 gap-4 my-4  mx-auto">
-        <MenuItem />
-        <MenuItem />
-        <MenuItem />
-        <MenuItem />
-        <MenuItem />
-        <MenuItem />
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 my-4 mx-auto">
+        {featuredMenuItems?.length > 0 &&
+          featuredMenuItems.map((item) => (
+            <div key={item._id} className="flex flex-col">
+              <MenuItem item={item} />
+            </div>
+          ))}
       </div>
     </section>
   );

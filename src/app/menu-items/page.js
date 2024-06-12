@@ -45,12 +45,12 @@ const MenuItemsPage = () => {
       </div>
       <div className="mt-2">
         <h2 className="text-sm text-gray-500 mt-8">Edit Menu Items:</h2>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
           {menuItemsList?.map((menuItem) => (
             <Link
               href={"/menu-items/edit/" + menuItem._id}
               key={menuItem._id}
-              className="bg-gray-200 rounded-lg p-4"
+              className="bg-gray-200 rounded-lg p-4 flex flex-col items-center justify-evenly h-full"
             >
               <div className="relative">
                 <Image
@@ -62,7 +62,9 @@ const MenuItemsPage = () => {
                   className="rounded-md"
                 />
               </div>
-              <div className="text-center">{menuItem.name}</div>
+              <div className="text-center mt-2 font-semibold">
+                {menuItem.name}
+              </div>
             </Link>
           ))}
         </div>
