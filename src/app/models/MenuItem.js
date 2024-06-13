@@ -15,7 +15,7 @@ const MenuItemSchema = new Schema(
       ref: "Category",
       required: true,
     },
-    price: { type: String, required: true },
+    price: { type: Number, required: true },
     sizes: { type: [ExtraPriceSchema] },
     extraIngredients: {
       type: [ExtraPriceSchema],

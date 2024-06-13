@@ -5,6 +5,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { CartContext } from "../AppContext";
 import { useContext } from "react";
+import CartIcon from "../icons/CartIcon";
 
 export default function Header() {
   const session = useSession();
@@ -54,7 +55,12 @@ export default function Header() {
               </Link>
             </>
           )}
-          <Link href={"#"}>Cart ({cartProducts.length})</Link>
+          <Link href={"/cart"} className="relative">
+            <CartIcon />
+            <span className="absolute -top-2 -right-4 bg-primary text-white text-sm p-1 rounded-full leading-3">
+              {cartProducts.length}
+            </span>
+          </Link>
         </nav>
       </header>
     </>

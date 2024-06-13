@@ -13,10 +13,11 @@ function MenuItemTile({ item, onAddToCart }) {
       <div className="text-center">
         <Image
           alt="Pizza"
-          className="mx-auto"
+          className="mx-auto w-auto"
           src={item.image}
           width={150}
           height={150}
+          priority
         />
       </div>
 
@@ -30,7 +31,11 @@ function MenuItemTile({ item, onAddToCart }) {
         onClick={onAddToCart}
         className="mt-4 w-auto mx-auto bg-primary text-white rounded-full px-8 py-2"
       >
-        <span>{`Add to cart $${item.price}`}</span>
+        {item.sizes?.length > 0 || item.extraIngredients > 0 ? (
+          <span>{`From $${item.price}`}</span>
+        ) : (
+          <span>{`Add to cart $${item.price}`}</span>
+        )}
       </button>
     </div>
   );
