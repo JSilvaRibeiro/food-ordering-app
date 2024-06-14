@@ -38,7 +38,7 @@ export default function Header() {
                   signOut();
                   redirect("/login");
                 }}
-                className="bg-primary rounded-full px-8 py-2 text-white"
+                className="bg-primary hover:bg-red-400 hover:border-red-400 rounded-full px-8 py-2 text-white"
               >
                 Logout
               </button>

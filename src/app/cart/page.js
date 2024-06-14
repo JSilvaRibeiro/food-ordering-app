@@ -1,20 +1,42 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import SectionHeaders from "../components/layout/SectionHeaders";
 import { CartContext, cartProductPrice } from "../components/AppContext";
 import Image from "next/image";
 import TrashIcon from "../components/icons/TrashIcon";
+import CheckoutForm from "../components/layout/CheckoutForm";
+import UseProfile from "../components/UseProfile";
 
 const CartPage = () => {
   const { cartProducts, removeCartProduct } = useContext(CartContext);
+  const [address, setAddress] = useState({});
+  const { data: userData } = UseProfile();
+  console.log(userData);
+
+  useEffect(() => {
+    if (userData?.city) {
+      const { phoneNumber, streetAddress, city, postalCode } = userData;
+      const addressFromUser = { phoneNumber, streetAddress, city, postalCode };
+      setAddress(addressFromUser);
+    }
+  }, [userData]);
+
+  const cartTotal = cartProducts
+    .map((product) => cartProductPrice(product))
+    .reduce((acc, price) => acc + price, 0)
+    .toFixed(2);
+
+  function handleAddressChange(propName, value) {
+    setAddress((prevAddress) => ({ ...prevAddress, [propName]: value }));
+  }
 
   return (
     <section className="mt-8">
       <div className="text-center">
-        <SectionHeaders mainHeader={"Check Out"} />
+        <SectionHeaders mainHeader={"Cart"} />
       </div>
-      <div className="mt-4 grid grid-cols-2 gap-4">
+      <div className="mt-8 grid grid-cols-2 gap-8">
         <div>
           {cartProducts?.length === 0 && (
             <div>No products in your shopping cart</div>
@@ -23,7 +45,7 @@ const CartPage = () => {
             cartProducts.map((product, index) => (
               <div
                 key={index}
-                className="flex items-center gap-4 mb-2 border-b py-2"
+                className="flex items-center justify-between gap-4 border-b py-4"
               >
                 <div className="w-32">
                   <Image
@@ -35,20 +57,17 @@ const CartPage = () => {
                     priority
                   />
                 </div>
-                <div className="grow">
+                <div className="flex flex-col grow">
                   <h3 className="font-semibold">{product.name}</h3>
                   {product.size && (
-                    <div className="text-sm ">
+                    <div className="text-sm">
                       Size: <span className="">{product.size.name}</span>
                     </div>
                   )}
                   {product.extras?.length > 0 && (
                     <div className="">
                       {product.extras.map((extra, extraIndex) => (
-                        <div
-                          key={extraIndex}
-                          className="text-gray-600 text-sm "
-                        >
+                        <div key={extraIndex} className="text-gray-600 text-sm">
                           {extra.name} +${extra.price}
                         </div>
                       ))}
@@ -56,7 +75,7 @@ const CartPage = () => {
                   )}
                 </div>
 
-                <div className="font-semibold">
+                <div className="font-semibold text-center">
                   ${cartProductPrice(product).toFixed(2)}
                 </div>
                 <div>
@@ -70,8 +89,20 @@ const CartPage = () => {
                 </div>
               </div>
             ))}
+          <div className="py-4 text-right">
+            Subtotal: <span className="font-semibold">${cartTotal}</span>
+          </div>
         </div>
-        <div>right</div>
+        <div className="bg-gray-100 p-4 h-fit rounded-lg">
+          <h2>Checkout</h2>
+          <form action="">
+            <CheckoutForm
+              addressProps={address}
+              setAddressProp={handleAddressChange}
+            />
+            <button type="submit">Pay ${cartTotal}</button>
+          </form>
+        </div>
       </div>
     </section>
   );

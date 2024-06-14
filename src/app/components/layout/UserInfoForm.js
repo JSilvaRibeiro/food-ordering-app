@@ -2,6 +2,7 @@ import UploadImage from "./UploadImage";
 import avatarIcon from "../../../../public/avatarIcon.jpg";
 import { useEffect, useState } from "react";
 import UseProfile from "../UseProfile";
+import CheckoutForm from "./CheckoutForm";
 
 const UserInfoForm = ({ user, onSave }) => {
   const [userName, setUserName] = useState("");
@@ -26,6 +27,13 @@ const UserInfoForm = ({ user, onSave }) => {
       setIsAdmin(user.admin || false);
     }
   }, [user]);
+
+  function handleAddressChange(propName, value) {
+    if (propName === "city") setCity(value);
+    if (propName === "phoneNumber") setPhoneNumber(value);
+    if (propName === "streetAddress") setStreetAddress(value);
+    if (propName === "postalCode") setPostalCode(value);
+  }
 
   return (
     <div className="flex gap-4">
@@ -68,7 +76,11 @@ const UserInfoForm = ({ user, onSave }) => {
           disabled={true}
           value={userEmail}
         />
-        <label>Phone</label>
+        <CheckoutForm
+          addressProps={{ phoneNumber, streetAddress, postalCode, city }}
+          setAddressProp={handleAddressChange}
+        />
+        {/* <label>Phone</label>
         <input
           type="tel"
           placeholder="Phone number"
@@ -101,7 +113,7 @@ const UserInfoForm = ({ user, onSave }) => {
               onChange={(ev) => setPostalCode(ev.target.value)}
             />
           </div>
-        </div>
+        </div> */}
         {loggedInUserData?.admin && (
           <div className="flex gap-2 mb-2 p-2 items-center">
             <input
