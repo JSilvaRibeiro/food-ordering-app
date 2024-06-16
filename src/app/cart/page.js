@@ -5,7 +5,7 @@ import SectionHeaders from "../components/layout/SectionHeaders";
 import { CartContext, cartProductPrice } from "../components/AppContext";
 import Image from "next/image";
 import TrashIcon from "../components/icons/TrashIcon";
-import CheckoutForm from "../components/layout/CheckoutForm";
+import CheckoutForm from "../components/layout/AddressInputs";
 import UseProfile from "../components/UseProfile";
 
 const CartPage = () => {

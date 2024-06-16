@@ -1,4 +1,4 @@
-function CheckoutForm({ addressProps, setAddressProp }) {
+function AddressInputs({ addressProps, setAddressProp }) {
   const { phoneNumber, streetAddress, postalCode, city } = addressProps;
 
   return (
@@ -41,4 +41,4 @@ function CheckoutForm({ addressProps, setAddressProp }) {
   );
 }
 
-export default CheckoutForm;
+export default AddressInputs;

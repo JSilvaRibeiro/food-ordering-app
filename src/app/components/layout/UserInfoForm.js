@@ -2,7 +2,7 @@ import UploadImage from "./UploadImage";
 import avatarIcon from "../../../../public/avatarIcon.jpg";
 import { useEffect, useState } from "react";
 import UseProfile from "../UseProfile";
-import CheckoutForm from "./CheckoutForm";
+import CheckoutForm from "./AddressInputs";
 
 const UserInfoForm = ({ user, onSave }) => {
   const [userName, setUserName] = useState("");

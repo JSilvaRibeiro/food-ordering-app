@@ -50,7 +50,7 @@ const MenuItemsPage = () => {
             <Link
               href={"/menu-items/edit/" + menuItem._id}
               key={menuItem._id}
-              className="bg-gray-200 rounded-lg p-4 flex flex-col items-center justify-evenly h-full"
+              className="bg-gray-200 hover:bg-white hover:shadow-2xl hover:shadow-black/50 rounded-lg p-4 flex flex-col items-center justify-evenly h-full"
             >
               <div className="relative">
                 <Image

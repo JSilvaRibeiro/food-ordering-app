@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import AddToCartButton from "./AddToCartButton";
 
 function MenuItemTile({ item, onAddToCart }) {
   const maxDescriptionLength = 100;
@@ -26,17 +27,7 @@ function MenuItemTile({ item, onAddToCart }) {
         {truncatedDescription}
       </p>
 
-      <button
-        type="button"
-        onClick={onAddToCart}
-        className="mt-4 w-auto mx-auto bg-primary text-white rounded-full px-8 py-2"
-      >
-        {item.sizes?.length > 0 || item.extraIngredients > 0 ? (
-          <span>{`From $${item.price}`}</span>
-        ) : (
-          <span>{`Add to cart $${item.price}`}</span>
-        )}
-      </button>
+      <AddToCartButton onClick={onAddToCart} item={item} />
     </div>
   );
 }

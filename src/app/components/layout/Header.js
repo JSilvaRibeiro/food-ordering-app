@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { CartContext } from "../AppContext";
 import { useContext } from "react";
 import CartIcon from "../icons/CartIcon";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const session = useSession();
@@ -14,6 +15,12 @@ export default function Header() {
   const userName = userData?.name || userData?.email;
 
   const { cartProducts } = useContext(CartContext);
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await signOut({ redirect: false });
+    router.push("/login");
+  };
   return (
     <>
       <header className="flex items-center justify-between">
@@ -34,10 +41,7 @@ export default function Header() {
               </Link>
               <button
                 type="button"
-                onClick={() => {
-                  signOut();
-                  redirect("/login");
-                }}
+                onClick={handleLogout}
                 className="bg-primary hover:bg-red-400 hover:border-red-400 rounded-full px-8 py-2 text-white"
               >
                 Logout

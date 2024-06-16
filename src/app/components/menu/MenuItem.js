@@ -148,7 +148,7 @@ export default function MenuItem({ item }) {
                     setShowPopup(false);
                     setSelectedExtras([]);
                   }}
-                  className="hover:bg-gray-300 on"
+                  className="hover:bg-gray-300"
                   type="button"
                 >
                   Cancel
