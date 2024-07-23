@@ -7,12 +7,17 @@ import Image from "next/image";
 import TrashIcon from "../components/icons/TrashIcon";
 import CheckoutForm from "../components/layout/AddressInputs";
 import UseProfile from "../components/UseProfile";
+import axios from "axios";
 
 const CartPage = () => {
   const { cartProducts, removeCartProduct } = useContext(CartContext);
-  const [address, setAddress] = useState({});
+  const [address, setAddress] = useState({
+    phoneNumber: "",
+    streetAddress: "",
+    city: "",
+    postalCode: "",
+  });
   const { data: userData } = UseProfile();
-  console.log(userData);
 
   useEffect(() => {
     if (userData?.city) {
@@ -22,13 +27,24 @@ const CartPage = () => {
     }
   }, [userData]);
 
-  const cartTotal = cartProducts
+  const subtotal = cartProducts
     .map((product) => cartProductPrice(product))
-    .reduce((acc, price) => acc + price, 0)
-    .toFixed(2);
+    .reduce((acc, price) => acc + price, 0);
 
   function handleAddressChange(propName, value) {
     setAddress((prevAddress) => ({ ...prevAddress, [propName]: value }));
+  }
+
+  async function proceedToCheckout(ev) {
+    ev.preventDefault();
+    try {
+      const response = await axios.post("/api/checkout", {
+        address,
+        cartProducts,
+      });
+    } catch (error) {
+      console.error("Error sending request:", error);
+    }
   }
 
   return (
@@ -68,7 +84,7 @@ const CartPage = () => {
                     <div className="">
                       {product.extras.map((extra, extraIndex) => (
                         <div key={extraIndex} className="text-gray-600 text-sm">
-                          {extra.name} +${extra.price}
+                          {extra.name} +${extra.price.toFixed(2)}
                         </div>
                       ))}
                     </div>
@@ -89,18 +105,30 @@ const CartPage = () => {
                 </div>
               </div>
             ))}
-          <div className="py-4 text-right">
-            Subtotal: <span className="font-semibold">${cartTotal}</span>
+          <div className="py-4 flex justify-end text-right">
+            <div className="text-gray-500">
+              Subtotal:
+              <br />
+              Delivery:
+              <br />
+              Total:
+            </div>
+            <div className="font-semibold pl-2 text-right">
+              ${subtotal.toFixed(2)}
+              <br />
+              $5.00
+              <br />${(subtotal + 5).toFixed(2)}
+            </div>
           </div>
         </div>
         <div className="bg-gray-100 p-4 h-fit rounded-lg">
           <h2>Checkout</h2>
-          <form action="">
+          <form onSubmit={proceedToCheckout}>
             <CheckoutForm
               addressProps={address}
               setAddressProp={handleAddressChange}
             />
-            <button type="submit">Pay ${cartTotal}</button>
+            <button type="submit">Pay ${(subtotal + 5).toFixed(2)}</button>
           </form>
         </div>
       </div>

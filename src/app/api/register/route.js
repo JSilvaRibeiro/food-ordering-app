@@ -40,5 +40,3 @@ export async function POST(req) {
   }
 }
 
-//food-ordering-app
-//t683tmrvEE5sVPpv

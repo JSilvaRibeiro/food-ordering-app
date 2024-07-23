@@ -10,5 +10,6 @@
   "tailwindCSS.includeLanguages": {
     "javascript": "javascript",
     "html": "HTML"
-  }
+  },
+  "editor.formatOnSaveMode": "modifications"
 }

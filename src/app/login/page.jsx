@@ -10,7 +10,6 @@ import UseProfile from "../components/UseProfile";
 import { redirect } from "next/navigation";
 
 const LoginPage = () => {
-  const { loading, data } = UseProfile();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggingIn, setLoggingIn] = useState(false);
@@ -25,10 +24,6 @@ const LoginPage = () => {
       callbackUrl: "/",
     });
     setLoggingIn(false);
-  }
-
-  if (data) {
-    redirect("/profile");
   }
 
   return (
