@@ -1,17 +1,19 @@
-function AddressInputs({ addressProps, setAddressProp }) {
-  const { phoneNumber, streetAddress, postalCode, city } = addressProps;
+function AddressInputs({ addressProps, setAddressProp, disabled = false }) {
+  const { phone, streetAddress, postalCode, city } = addressProps;
 
   return (
     <>
       <label>Phone</label>
       <input
+        disabled={disabled}
         type="tel"
         placeholder="Phone number"
-        value={phoneNumber}
-        onChange={(ev) => setAddressProp("phoneNumber", ev.target.value)}
+        value={phone}
+        onChange={(ev) => setAddressProp("phone", ev.target.value)}
       />
       <label>Street Address</label>
       <input
+        disabled={disabled}
         type="text"
         placeholder="Street Address"
         value={streetAddress}
@@ -21,6 +23,7 @@ function AddressInputs({ addressProps, setAddressProp }) {
         <div>
           <label>City</label>
           <input
+            disabled={disabled}
             type="text"
             placeholder="City"
             value={city}
@@ -30,6 +33,7 @@ function AddressInputs({ addressProps, setAddressProp }) {
         <div>
           <label>Postal Code</label>
           <input
+            disabled={disabled}
             type="text"
             placeholder="Postal Code"
             value={postalCode}

@@ -13,10 +13,19 @@ const UseProfile = () => {
     try {
       setLoading(true);
       const response = await axios.get("/api/profile");
-      setData(response.data);
+      if (response.status === 200) {
+        setData(response.data);
+      } else {
+        setData(null);
+      }
     } catch (error) {
-      console.error("Error fetching user data:", error);
-      setData(null);
+      if (error.response && error.response.status === 401) {
+        console.log("User not logged in.");
+        setData(null);
+      } else {
+        console.error("Error fetching user data:", error);
+        setData(null);
+      }
     } finally {
       setLoading(false);
     }

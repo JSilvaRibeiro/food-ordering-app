@@ -15,7 +15,10 @@ export async function POST(req) {
 
     const orderDocument = await Order.create({
       userEmail,
-      ...address,
+      phone: address.phone, // Use 'phone' instead of 'phoneNumber'
+      streetAddress: address.streetAddress,
+      city: address.city,
+      postalCode: address.postalCode,
       cartProducts,
       paid: false,
     });
@@ -24,7 +27,6 @@ export async function POST(req) {
     let calculatedTotal = 0; // Initialize total calculation
 
     for (const cartProduct of cartProducts) {
-      console.log(cartProduct);
       const productInfo = await MenuItem.findById(cartProduct._id);
       let productPrice = productInfo.price;
       if (cartProduct.size) {
@@ -62,16 +64,20 @@ export async function POST(req) {
     const deliveryFee = 5.0;
     calculatedTotal += deliveryFee;
 
-    // Check if total matches
-    console.log({ calculatedTotal });
-
     const stripeSession = await stripe.checkout.sessions.create({
       line_items: stripeLineItems,
       mode: "payment",
       customer_email: userEmail,
-      success_url: process.env.NEXTAUTH_URL + "cart?success=1",
+      success_url:
+        process.env.NEXTAUTH_URL +
+        "orders/" +
+        orderDocument._id.toString() +
+        "?clear-cart=1",
       cancel_url: process.env.NEXTAUTH_URL + "cart?cancelled=1",
       metadata: { orderId: orderDocument._id.toString() },
+      payment_intent_data: {
+        metadata: { orderId: orderDocument._id.toString() },
+      },
       shipping_options: [
         {
           shipping_rate_data: {
@@ -86,9 +92,10 @@ export async function POST(req) {
       ],
     });
 
-    return NextResponse.json(stripeSession.url);
+    return NextResponse.json({ url: stripeSession.url });
   } catch (error) {
-    console.error("Did not work:", error);
+    console.error("Error", error);
     return NextResponse.json(error.message, { status: 500 });
   }
 }
+

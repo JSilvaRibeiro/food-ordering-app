@@ -3,16 +3,16 @@
 import { useContext, useEffect, useState } from "react";
 import SectionHeaders from "../components/layout/SectionHeaders";
 import { CartContext, cartProductPrice } from "../components/AppContext";
-import Image from "next/image";
-import TrashIcon from "../components/icons/TrashIcon";
-import CheckoutForm from "../components/layout/AddressInputs";
+import AddressInputs from "../components/layout/AddressInputs";
 import UseProfile from "../components/UseProfile";
 import axios from "axios";
+import toast from "react-hot-toast";
+import CartProduct from "../components/menu/CartProduct";
 
 const CartPage = () => {
   const { cartProducts, removeCartProduct } = useContext(CartContext);
   const [address, setAddress] = useState({
-    phoneNumber: "",
+    phone: "",
     streetAddress: "",
     city: "",
     postalCode: "",
@@ -20,9 +20,17 @@ const CartPage = () => {
   const { data: userData } = UseProfile();
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (window.location.href.includes("cancelled=1")) {
+        toast.error("Payment failed");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     if (userData?.city) {
-      const { phoneNumber, streetAddress, city, postalCode } = userData;
-      const addressFromUser = { phoneNumber, streetAddress, city, postalCode };
+      const { phoneNumber: phone, streetAddress, city, postalCode } = userData;
+      const addressFromUser = { phone, streetAddress, city, postalCode };
       setAddress(addressFromUser);
     }
   }, [userData]);
@@ -37,14 +45,37 @@ const CartPage = () => {
 
   async function proceedToCheckout(ev) {
     ev.preventDefault();
-    try {
-      const response = await axios.post("/api/checkout", {
-        address,
-        cartProducts,
-      });
-    } catch (error) {
-      console.error("Error sending request:", error);
-    }
+
+    const createOrder = async () => {
+      try {
+        const response = await axios.post("/api/checkout", {
+          address,
+          cartProducts,
+        });
+        if (response.status === 200) {
+          window.location = response.data.url;
+        } else {
+          throw new Error("Something went wrong");
+        }
+      } catch (error) {
+        console.error("Error sending request:", error);
+        throw error;
+      }
+    };
+    toast.promise(createOrder(), {
+      loading: "Preparing your order...",
+      success: "Redirecting to payment...",
+      error: "Something went wrong... Please try again later",
+    });
+  }
+
+  if (cartProducts?.length === 0) {
+    return (
+      <section className="mt-8 text-center">
+        <SectionHeaders mainHeader="Cart" />
+        <p className="mt-4">Your shopping cart is empty</p>
+      </section>
+    );
   }
 
   return (
@@ -54,57 +85,14 @@ const CartPage = () => {
       </div>
       <div className="mt-8 grid grid-cols-2 gap-8">
         <div>
-          {cartProducts?.length === 0 && (
-            <div>No products in your shopping cart</div>
-          )}
-          {cartProducts?.length > 0 &&
-            cartProducts.map((product, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between gap-4 border-b py-4"
-              >
-                <div className="w-32">
-                  <Image
-                    src={product.image}
-                    width={240}
-                    height={240}
-                    alt="product image"
-                    className="w-auto h-full"
-                    priority
-                  />
-                </div>
-                <div className="flex flex-col grow">
-                  <h3 className="font-semibold">{product.name}</h3>
-                  {product.size && (
-                    <div className="text-sm">
-                      Size: <span className="">{product.size.name}</span>
-                    </div>
-                  )}
-                  {product.extras?.length > 0 && (
-                    <div className="">
-                      {product.extras.map((extra, extraIndex) => (
-                        <div key={extraIndex} className="text-gray-600 text-sm">
-                          {extra.name} +${extra.price.toFixed(2)}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <div className="font-semibold text-center">
-                  ${cartProductPrice(product).toFixed(2)}
-                </div>
-                <div>
-                  <button
-                    onClick={() => removeCartProduct(index)}
-                    type="button"
-                    className="p-2 hover:bg-gray-300"
-                  >
-                    <TrashIcon />
-                  </button>
-                </div>
-              </div>
-            ))}
+          {cartProducts.map((product, index) => (
+            <CartProduct
+              key={index}
+              index={index}
+              product={product}
+              onRemove={removeCartProduct}
+            />
+          ))}
           <div className="py-4 flex justify-end text-right">
             <div className="text-gray-500">
               Subtotal:
@@ -124,7 +112,7 @@ const CartPage = () => {
         <div className="bg-gray-100 p-4 h-fit rounded-lg">
           <h2>Checkout</h2>
           <form onSubmit={proceedToCheckout}>
-            <CheckoutForm
+            <AddressInputs
               addressProps={address}
               setAddressProp={handleAddressChange}
             />

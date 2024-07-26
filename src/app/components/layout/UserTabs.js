@@ -37,14 +37,14 @@ const UserTabs = ({ isAdmin }) => {
           >
             Users
           </Link>
-          <Link
-            className={path === "/orders" ? "active" : "hover:bg-gray-200"}
-            href={"/orders"}
-          >
-            Orders
-          </Link>
         </>
       )}
+      <Link
+        className={path === "/orders" ? "active" : "hover:bg-gray-200"}
+        href={"/orders"}
+      >
+        Orders
+      </Link>
     </div>
   );
 };

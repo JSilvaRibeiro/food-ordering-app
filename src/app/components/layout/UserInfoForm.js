@@ -2,7 +2,7 @@ import UploadImage from "./UploadImage";
 import avatarIcon from "../../../../public/avatarIcon.jpg";
 import { useEffect, useState } from "react";
 import UseProfile from "../UseProfile";
-import CheckoutForm from "./AddressInputs";
+import AddressInputs from "./AddressInputs";
 
 const UserInfoForm = ({ user, onSave }) => {
   const [userName, setUserName] = useState("");
@@ -76,7 +76,7 @@ const UserInfoForm = ({ user, onSave }) => {
           disabled={true}
           value={userEmail}
         />
-        <CheckoutForm
+        <AddressInputs
           addressProps={{ phoneNumber, streetAddress, postalCode, city }}
           setAddressProp={handleAddressChange}
         />
