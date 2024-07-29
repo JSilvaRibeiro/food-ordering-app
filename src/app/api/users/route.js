@@ -1,5 +1,4 @@
 import { User } from "@/app/models/User";
-
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 import { isAdmin } from "../auth/[...nextauth]/route";
@@ -10,10 +9,11 @@ const connectDB = async () => {
   }
 };
 
-export async function GET() {
+export async function GET(req) {
   try {
     await connectDB();
-    if (await isAdmin()) {
+    const isAdminUser = await isAdmin();
+    if (isAdminUser) {
       const users = await User.find();
       return NextResponse.json(users);
     } else {
@@ -27,3 +27,6 @@ export async function GET() {
     );
   }
 }
+
+// Mark the route as dynamic
+export const dynamic = "force-dynamic";

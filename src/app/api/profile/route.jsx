@@ -4,6 +4,8 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { User } from "@/app/models/User";
 import { NextResponse } from "next/server";
 
+export const dynamic = "true";
+
 export async function PUT(req) {
   try {
     const session = await getServerSession(authOptions);
