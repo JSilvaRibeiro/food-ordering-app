@@ -6,30 +6,21 @@ const UseProfile = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchUserData();
-  }, []);
-
-  const fetchUserData = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get("/api/profile");
-      if (response.status === 200) {
+    const fetchUserData = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get("/api/profile");
         setData(response.data);
-      } else {
-        setData(null);
-      }
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        console.log("User not logged in.");
-        setData(null);
-      } else {
+      } catch (error) {
         console.error("Error fetching user data:", error);
         setData(null);
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    fetchUserData();
+  }, []);
 
   return { loading, data };
 };

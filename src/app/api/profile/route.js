@@ -4,7 +4,13 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { User } from "@/app/models/User";
 import { NextResponse } from "next/server";
 
-export const dynamic = "true";
+export const dynamic = "force-dynamic";
+
+const connectDB = async () => {
+  if (mongoose.connection.readyState !== 1) {
+    await mongoose.connect(process.env.MONGO_URL);
+  }
+};
 
 export async function PUT(req) {
   try {
@@ -14,7 +20,7 @@ export async function PUT(req) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
-    await mongoose.connect(process.env.MONGO_URL);
+    await connectDB();
 
     const data = await req.json();
     const { _id, ...otherUserInfo } = data;
@@ -46,7 +52,7 @@ export async function PUT(req) {
 
 export async function GET() {
   try {
-    await mongoose.connect(process.env.MONGO_URL);
+    await connectDB();
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user) {
