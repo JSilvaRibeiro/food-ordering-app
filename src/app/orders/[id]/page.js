@@ -23,11 +23,18 @@ const OrderPage = () => {
       if (id) {
         try {
           setLoadingOrder(true);
-          const response = await axios.get("/api/orders?_id=" + id);
+          const response = await axios.get(`/api/orders?_id=${id}`, {
+            timeout: 10000, // Set timeout to 10 seconds
+          });
           setOrder(response.data);
-          setLoadingOrder(false);
         } catch (error) {
-          console.error("Error fetching order:", error);
+          if (error.code === "ECONNABORTED") {
+            console.error("Error fetching order: Request timeout");
+          } else {
+            console.error("Error fetching order:", error);
+          }
+        } finally {
+          setLoadingOrder(false);
         }
       }
     };
