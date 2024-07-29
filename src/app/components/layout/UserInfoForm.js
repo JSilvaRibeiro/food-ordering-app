@@ -36,9 +36,9 @@ const UserInfoForm = ({ user, onSave }) => {
   }
 
   return (
-    <div className="flex gap-4">
+    <div className="md:flex gap-4">
       <div>
-        <div className="p-2 relative rounded-lg max-w-[120px]">
+        <div className="p-2 relative mx-auto rounded-lg max-w-[120px]">
           <UploadImage link={userImage} setLink={setUserImage} />
         </div>
       </div>
@@ -80,40 +80,6 @@ const UserInfoForm = ({ user, onSave }) => {
           addressProps={{ phoneNumber, streetAddress, postalCode, city }}
           setAddressProp={handleAddressChange}
         />
-        {/* <label>Phone</label>
-        <input
-          type="tel"
-          placeholder="Phone number"
-          value={phoneNumber}
-          onChange={(ev) => setPhoneNumber(ev.target.value)}
-        />
-        <label>Street Address</label>
-        <input
-          type="text"
-          placeholder="Street Address"
-          value={streetAddress}
-          onChange={(ev) => setStreetAddress(ev.target.value)}
-        />
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            <label>City</label>
-            <input
-              type="text"
-              placeholder="City"
-              value={city}
-              onChange={(ev) => setCity(ev.target.value)}
-            />
-          </div>
-          <div>
-            <label>Postal Code</label>
-            <input
-              type="text"
-              placeholder="Postal Code"
-              value={postalCode}
-              onChange={(ev) => setPostalCode(ev.target.value)}
-            />
-          </div>
-        </div> */}
         {loggedInUserData?.admin && (
           <div className="flex gap-2 mb-2 p-2 items-center">
             <input

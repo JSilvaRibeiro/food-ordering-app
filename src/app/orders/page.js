@@ -36,9 +36,9 @@ const OrdersPage = () => {
         {orders.map((order) => (
           <div
             key={order._id}
-            className="bg-gray-100 mb-2 p-4 rounded-lg flex items-center gap-6"
+            className="bg-gray-100 mb-2 p-4 rounded-lg flex flex-col md:flex-row items-center gap-6"
           >
-            <div className="grow flex items-center gap-6">
+            <div className="grow flex flex-col md:flex-row items-center gap-6">
               <div>
                 <div
                   className={`${
@@ -61,7 +61,10 @@ const OrdersPage = () => {
               </div>
             </div>
             <div className="justify-end flex items-center gap-2 whitespace-nowrap">
-              <Link className="button" href={`/orders/${order._id}`}>
+              <Link
+                className="button hover:bg-gray-300"
+                href={`/orders/${order._id}`}
+              >
                 View
               </Link>
             </div>

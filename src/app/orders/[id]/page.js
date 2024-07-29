@@ -52,7 +52,7 @@ const OrderPage = () => {
       </div>
       {loadingOrder && <div>Loading order...</div>}
       {order && (
-        <div className="grid grid-cols-2 gap-16">
+        <div className="grid md:grid-cols-2 md:gap-16">
           <div>
             {order.cartProducts.map((product, index) => (
               <CartProduct key={index} product={product} />

@@ -8,7 +8,7 @@ const UserTabs = ({ isAdmin }) => {
   const path = usePathname();
 
   return (
-    <div className="flex justify-center gap-2 tabs">
+    <div className="flex justify-center gap-2 tabs flex-wrap">
       <Link
         className={path === "/profile" ? "active" : "hover:bg-gray-200"}
         href={"/profile"}

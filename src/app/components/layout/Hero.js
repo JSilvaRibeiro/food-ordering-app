@@ -17,13 +17,16 @@ export default function Hero() {
         </p>
         <div className="flex gap-6 items-center text-base">
           <div className="w-72">
-            <button className="bg-primary flex gap-2 text-white py-2 px-6 items-center justify-center rounded-full">
+            <Link
+              href={"/menu"}
+              className="bg-primary flex gap-2 text-white py-2 px-6 items-center font-semibold justify-center rounded-full"
+            >
               Order&nbsp;now
               <RightArrow />
-            </button>
+            </Link>
           </div>
           <Link
-            href={"/"}
+            href={"#about"}
             className="flex gap-2 text-gray-700 font-semibold items-center"
           >
             Learn&nbsp;more
