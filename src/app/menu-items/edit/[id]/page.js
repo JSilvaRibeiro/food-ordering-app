@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import UseProfile from "@/app/components/UseProfile";
 import UploadImage from "@/app/components/layout/UploadImage";
 import UserTabs from "@/app/components/layout/UserTabs";
@@ -18,11 +18,7 @@ const EditMenuItemPage = () => {
   const [menuItem, setMenuItem] = useState(null);
   const [redirectToItems, setRedirectToItems] = useState(false);
 
-  useEffect(() => {
-    fetchMenuItem();
-  }, []);
-
-  async function fetchMenuItem() {
+  const fetchMenuItem = useCallback(async () => {
     try {
       const response = await axios.get("/api/menu-items");
       const items = response.data;
@@ -32,7 +28,11 @@ const EditMenuItemPage = () => {
     } catch (error) {
       console.error("Error fetching menu item:", error);
     }
-  }
+  }, [id]);
+
+  useEffect(() => {
+    fetchMenuItem();
+  }, [fetchMenuItem]);
 
   async function handleFormSubmit(ev, data) {
     ev.preventDefault();
@@ -66,7 +66,7 @@ const EditMenuItemPage = () => {
   }
 
   async function handleDeleteClick() {
-    async function deleteItem() {
+    const deleteItem = async () => {
       try {
         const response = await axios.delete("/api/menu-items?_id=" + id);
         if (response.status === 200) {
@@ -76,7 +76,7 @@ const EditMenuItemPage = () => {
         console.error("Error deleting item", error);
         throw error;
       }
-    }
+    };
     toast.promise(deleteItem(), {
       loading: "Deleting item...",
       success: "Item deleted successfully!",
@@ -93,7 +93,7 @@ const EditMenuItemPage = () => {
   }
 
   if (!data.admin) {
-    return "not an admin";
+    return "Not an admin";
   }
 
   return (

@@ -5,7 +5,7 @@ import UserInfoForm from "@/app/components/layout/UserInfoForm";
 import UserTabs from "@/app/components/layout/UserTabs";
 import axios from "axios";
 import { redirect, useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import toast from "react-hot-toast";
 
 const EditUserPage = () => {
@@ -14,11 +14,7 @@ const EditUserPage = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [redirectToUsers, setRedirectToUsers] = useState(false);
 
-  useEffect(() => {
-    fetchUserInfo();
-  }, []);
-
-  async function fetchUserInfo() {
+  const fetchUserInfo = useCallback(async () => {
     try {
       const response = await axios.get("/api/users");
 
@@ -26,8 +22,14 @@ const EditUserPage = () => {
       const user = users.find((i) => i._id === id);
 
       setUserInfo(user);
-    } catch (error) {}
-  }
+    } catch (error) {
+      console.error("Error fetching user info:", error);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, [fetchUserInfo]);
 
   async function handleUserSaveClick(ev, data) {
     ev.preventDefault();
@@ -43,6 +45,7 @@ const EditUserPage = () => {
           setRedirectToUsers(true);
         }
       } catch (error) {
+        console.error("Error saving user info:", error);
         throw error;
       }
     }
@@ -65,6 +68,7 @@ const EditUserPage = () => {
   if (!data.admin) {
     return "Not an admin";
   }
+
   return (
     <section className="mt-8 mx-auto max-w-2xl">
       <UserTabs isAdmin={true} />

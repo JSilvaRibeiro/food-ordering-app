@@ -33,8 +33,7 @@ const UsersPage = () => {
   return (
     <section className="mt-8 max-2xl mx-auto">
       <UserTabs isAdmin={true} />
-      <div>
-        <h1>Users List:</h1>
+      <div className="mt-8">
         {userList?.length > 0 &&
           userList.map((user) => (
             <div

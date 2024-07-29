@@ -47,7 +47,7 @@ const OrderPage = () => {
         <SectionHeaders mainHeader="Your Order" />
         <div className="mt-4 mb-8">
           <p>Thank you for your order!</p>
-          <p>We'll let you know when it's on the way.</p>
+          <p>We&apos;ll let you know when it&apos;s on the way.</p>
         </div>
       </div>
       {loadingOrder && <div>Loading order...</div>}
