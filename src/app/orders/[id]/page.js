@@ -15,7 +15,7 @@ const OrderPage = () => {
 
   useEffect(() => {
     const fetchOrder = async () => {
-      if (typeof window !== "undefined") {
+      if (typeof window.console !== "undefined") {
         if (window.location.href.includes("clear-cart=1")) {
           clearCart();
         }
@@ -40,7 +40,7 @@ const OrderPage = () => {
     };
 
     fetchOrder();
-  }, [id, clearCart]);
+  }, []);
 
   const calculateSubtotal = (cartProducts) => {
     return cartProducts
